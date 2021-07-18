@@ -7,6 +7,10 @@ from config import *
 def main():
     print(hello_world)
     word = Word()
-    print(word)
+    
+    #test
+    #print(word.letters)
+    #word.draw('M')
+    #print(word.filled_letters)
 
 main()
