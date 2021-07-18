@@ -13,22 +13,15 @@ def main():
 
     pygame.display.set_caption("Hangman")
 
-    
-    word = Word()
-
+    game = Game()
 
     run = True
     while run:
-        word.draw(win)
+        game.render(win)
 
-        #these should be in game later
-        mouse = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse)
+        game.play()
 
+    
     pygame.quit()
     
 if __name__ == '__main__':
