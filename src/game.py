@@ -4,11 +4,12 @@ from config import *
 
 class Game:
     def __init__(self):
-        self.word = Word()  
+        self.word = Word() 
         #self.number_of_players = number_of_players
         self.menu = False
         self.is_writing = False
         self.player_text = "" #current input from player
+        self.used_letters = []
 
     def render(self, win):
         font = pygame.font.SysFont((FONT_NAME), LETTER_SIZE)
@@ -20,6 +21,10 @@ class Game:
             text= font.render(self.player_text, 1, WHITE)
             win.blit(text, (100, 100)) #player text
 
+        #draw the used letters
+
+        #draw the hangman
+
     def handle_envents(self):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -29,17 +34,27 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #if menu:  if mouse in menu boxes: code
                 #if coords_of_text_box.collidepoint(mouse):
-                if True:
+                if True: #check for textbox
                     self.is_writing = True
                 else:
                     self.is_writing = False
             
             if event.type == pygame.KEYDOWN:
+
+                #handle lowercase and uppercase
                 if self.is_writing and len(self.player_text) < 1:
                     self.player_text = pygame.key.name(event.key)
+                    print(self.player_text)
  
     def play(self):
         if self.is_writing:
-            print("Receiving")
-                 
+            #print("rrr")
+
+            #input is being taken when a key is pressed maybe we should wait for ENTER or something
+            if len(self.player_text) == 1:
+                #print("ENTER")
+                if not self.word.fill(self.player_text):
+                    self.used_letters.append(self.player_text)
+                self.player_text = ""
+
                     

@@ -6,27 +6,26 @@ class Word:
     def __init__(self):
         #maybe we read from a text file here and choose a random word
         #theme could be a parameter
-        self.letters=random.choice(list_words)
+        self.letters = random.choice(list_words).lower()
         
         #test
         #self.letters = 'MOSCOWM'
         
         self.filled_letters = ['_' for x in self.letters]
         self.length = len(self.letters)
-        self.used_letters =[]
+        self.used_letters = []
 
-    def play(self, letter): #wip
-        if letter in self.used_letters:
-            print('Invalid input, try again')
-        elif letter in self.letters:
+    def fill(self, letter): #wip
+        #if letter in self.used_letters:
+            #print('Invalid input, try again')
+        if letter in self.letters:
             for i in range(len(self.letters)):
                 if self.letters[i] == letter:
                     self.filled_letters[i] = letter
+            #self.filled_letters = [letter if letter == x else x for x in self.letters]
             #indexes = self.letters.find(letter)
             return True
-        else:
-            self.used_letters.append(letter)
-            return False
+        return False
         #checks if the letter input has already been used or if it is
         #correct or wrong. It needs to change the hangman status after
 
