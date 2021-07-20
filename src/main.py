@@ -18,7 +18,7 @@ def main():
     run = True
     while run:
         game.render(win)
-
+        game.handle_envents()
         game.play()
 
     

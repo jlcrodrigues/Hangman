@@ -11,5 +11,6 @@ LETTER_SIZE = 40
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+FONT_NAME = "trebuchetms"
 
 coords_of_text_box = ( 15, 15) # to be determined

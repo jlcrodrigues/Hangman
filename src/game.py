@@ -6,31 +6,40 @@ class Game:
     def __init__(self):
         self.word = Word()  
         #self.number_of_players = number_of_players
-        self.menu = True 
+        self.menu = False
+        self.is_writing = False
+        self.player_text = "" #current input from player
 
     def render(self, win):
-        MENU = pygame.image.load('insert_menu_file_name_here.png')
+        font = pygame.font.SysFont((FONT_NAME), LETTER_SIZE)
+        #MENU = pygame.image.load('insert_menu_file_name_here.png')
         self.word.draw(win)
         if self.menu:
             win.blit(MENU, (0,0))
+        if len(self.player_text) <= 1:
+            text= font.render(self.player_text, 1, WHITE)
+            win.blit(text, (100, 100)) #player text
 
-    def play(self):
+    def handle_envents(self):
         mouse = pygame.mouse.get_pos()
-        font = pygame.font.SysFont(("trebuchetms"), LETTER_SIZE/2)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            #debug
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(mouse)
                 #if menu:  if mouse in menu boxes: code
-                if coords_of_text_box.collidepoint(mouse):
-                    active = True
+                #if coords_of_text_box.collidepoint(mouse):
+                if True:
+                    self.is_writing = True
+                else:
+                    self.is_writing = False
             
             if event.type == pygame.KEYDOWN:
-                if active:
-                    self.word.letter = pygame.key.name(event.key)
-                    text = font.render(self.word.letter, 1, WHITE)
-                    win.blit(text, (text_x_coordinate, text_y_coordinate ))         
+                if self.is_writing and len(self.player_text) < 1:
+                    self.player_text = pygame.key.name(event.key)
+ 
+    def play(self):
+        if self.is_writing:
+            print("Receiving")
+                 
                     
