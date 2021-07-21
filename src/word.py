@@ -18,13 +18,16 @@ class Word:
     def fill(self, letter): #wip
         #if letter in self.used_letters:
             #print('Invalid input, try again')
-        if letter in self.letters:
+        if letter in self.letters and (ord(letter) in range(65,91) 
+                                       or ord(letter) in range(97,122)):
             for i in range(len(self.letters)):
-                if self.letters[i] == letter:
-                    self.filled_letters[i] = letter
+                if self.letters[i] == letter.lower():
+                    self.filled_letters[i] = letter.lower()
             #self.filled_letters = [letter if letter == x else x for x in self.letters]
             #indexes = self.letters.find(letter)
             return True
+        elif ord(letter) in range(65,91) or ord(letter) in range(97,122):
+            self.used_letters.append(letter.lower())
         return False
         #checks if the letter input has already been used or if it is
         #correct or wrong. It needs to change the hangman status after

@@ -1,5 +1,6 @@
 import pygame
 from word import Word
+from hangman import Hangman
 from config import *
 
 class Game:
@@ -10,6 +11,9 @@ class Game:
         self.is_writing = False
         self.player_text = "" #current input from player
         self.used_letters = []
+        self.hangman = Hangman()
+        
+        print(self.word.letters)
 
     def render(self, win):
         font = pygame.font.SysFont((FONT_NAME), LETTER_SIZE)
@@ -22,6 +26,21 @@ class Game:
             win.blit(text, (100, 100)) #player text
 
         #draw the used letters
+        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len("abcdefghijklmnopqrstuvwxyz") / 2)
+        for i in "abcdefghijklmnopqrstuvwxyz":
+            text = font.render(i, 1, WHITE)
+            if i in self.word.used_letters:
+                text = font.render(i, 1, RED)
+            elif i in self.word.filled_letters:
+                text = font.render(i, 1, GREEN)
+            
+            win.blit(text, (pos_x + (text.get_width() / 2), 4*SCREEN_HEIGHT / 5))         
+            pos_x += LETTER_SIZE
+        
+        #for i in self.word.used_letters:            
+         #   text = font.render(i, 1, WHITE)
+          #  win.blit(text, (pos_x + (text.get_width() / 2), 4*SCREEN_HEIGHT / 5))         
+           # pos_x += LETTER_SIZE
 
         #draw the hangman
 
@@ -42,7 +61,7 @@ class Game:
             if event.type == pygame.KEYDOWN:
 
                 #handle lowercase and uppercase
-                if self.is_writing and len(self.player_text) < 1:
+                if self.is_writing and len(self.player_text) < 1 :
                     self.player_text = pygame.key.name(event.key)
                     print(self.player_text)
  
@@ -55,6 +74,11 @@ class Game:
                 #print("ENTER")
                 if not self.word.fill(self.player_text):
                     self.used_letters.append(self.player_text)
+                    self.hangman.state += 1
                 self.player_text = ""
+                
+            if self.hangman.state == 8:
+               #game over
+                pass 
 
                     
