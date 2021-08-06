@@ -17,7 +17,7 @@ class Game:
 
     def render(self, win):
         font = pygame.font.SysFont((FONT_NAME), LETTER_SIZE)
-        #MENU = pygame.image.load('insert_menu_file_name_here.png')
+        
         self.word.draw(win)
         if self.menu:
             win.blit(MENU, (0,0))
@@ -26,16 +26,20 @@ class Game:
             win.blit(text, (100, 100)) #player text
 
         #draw the used letters
-        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len("abcdefghijklmnopqrstuvwxyz") / 2)
-        for i in "abcdefghijklmnopqrstuvwxyz":
+        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(abc) / 4)
+        pos_y = 4 * SCREEN_HEIGHT / 5
+        for i in abc:
             text = font.render(i, 1, WHITE)
             if i in self.word.used_letters:
                 text = font.render(i, 1, RED)
             elif i in self.word.filled_letters:
                 text = font.render(i, 1, GREEN)
             
-            win.blit(text, (pos_x + (text.get_width() / 2), 4*SCREEN_HEIGHT / 5))         
+            win.blit(text, (pos_x + (text.get_width() / 2), pos_y))         
             pos_x += LETTER_SIZE
+            if i == 'm': 
+                pos_y += LETTER_SIZE + 1
+                pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(abc) / 4)
         
         #for i in self.word.used_letters:            
          #   text = font.render(i, 1, WHITE)
@@ -43,6 +47,14 @@ class Game:
            # pos_x += LETTER_SIZE
 
         #draw the hangman
+        
+        #draw win or lose
+        if self.hangman.state == 8:
+            text = font.render( 'YOU LOSE', 1, WHITE)
+            win.blit(text, (SCREEN_WIDTH / 2 - len('YOU LOSE') * LETTER_SIZE, 1/8 * SCREEN_HEIGHT))
+        if not '_' in self.word.filled_letters:
+            text = font.render( 'YOU WIN', 1, WHITE)
+            win.blit(text, (SCREEN_WIDTH / 2 - len('YOU WIN') * LETTER_SIZE/2, 1/8 * SCREEN_HEIGHT))
 
     def handle_envents(self):
         mouse = pygame.mouse.get_pos()
@@ -67,8 +79,7 @@ class Game:
  
     def play(self):
         if self.is_writing:
-            #print("rrr")
-
+            
             #input is being taken when a key is pressed maybe we should wait for ENTER or something
             if len(self.player_text) == 1:
                 #print("ENTER")
@@ -80,5 +91,6 @@ class Game:
             if self.hangman.state == 8:
                #game over
                 pass 
+            print(self.hangman.state)
 
                     

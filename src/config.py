@@ -16,3 +16,4 @@ GREEN = (0, 255, 0)
 FONT_NAME = "trebuchetms"
 
 coords_of_text_box = ( 15, 15) # to be determined
+abc = "abcdefghijklmnopqrstuvwxyz"

@@ -1,3 +1,6 @@
+import pygame
+#from main import win
+from config import *
 class Hangman:
     def __init__(self):
         self.state = 0
@@ -9,4 +12,6 @@ class Hangman:
         
 
     def draw(self):
+        image = pygame.image.load('images/%s.jpg' %str(self.state))
+        #win.blit(image, (0, 0))
         pass
