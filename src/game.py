@@ -31,9 +31,9 @@ class Game:
         for i in abc:
             text = font.render(i, 1, WHITE)
             if i in self.word.used_letters:
-                text = font.render(i, 1, RED)
+                text = font.render(i, 1, BLACK)
             elif i in self.word.filled_letters:
-                text = font.render(i, 1, GREEN)
+                text = font.render(i, 1, BLACK)
             
             win.blit(text, (pos_x + (text.get_width() / 2), pos_y))         
             pos_x += LETTER_SIZE
@@ -47,7 +47,8 @@ class Game:
            # pos_x += LETTER_SIZE
 
         #draw the hangman
-        
+        self.hangman.draw(win)
+
         #draw win or lose
         if self.hangman.state == 8:
             text = font.render( 'YOU LOSE', 1, WHITE)
@@ -74,8 +75,7 @@ class Game:
 
                 #handle lowercase and uppercase
                 if self.is_writing and len(self.player_text) < 1 :
-                    self.player_text = pygame.key.name(event.key)
-                    print(self.player_text)
+                    self.player_text = pygame.key.name(event.key).lower()
  
     def play(self):
         if self.is_writing:
@@ -86,11 +86,10 @@ class Game:
                 if not self.word.fill(self.player_text):
                     self.used_letters.append(self.player_text)
                     self.hangman.state += 1
-                self.player_text = ""
+            self.player_text = ""
                 
             if self.hangman.state == 8:
                #game over
                 pass 
-            print(self.hangman.state)
 
                     

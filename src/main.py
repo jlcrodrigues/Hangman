@@ -10,13 +10,14 @@ def main():
     pygame.init()
 
     win = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-
     pygame.display.set_caption("Hangman")
+    clock = pygame.time.Clock()
 
     game = Game()
 
     run = True
     while run:
+        clock.tick(60)
         game.render(win)
         game.handle_envents()
         game.play()

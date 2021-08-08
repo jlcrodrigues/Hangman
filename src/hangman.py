@@ -1,9 +1,9 @@
 import pygame
-#from main import win
+
 from config import *
 class Hangman:
     def __init__(self):
-        self.state = 0
+        self.state = 1
 
     def isDead(self):
         if self.state == 8:
@@ -11,7 +11,8 @@ class Hangman:
         return False
         
 
-    def draw(self):
-        image = pygame.image.load('images/%s.jpg' %str(self.state))
-        #win.blit(image, (0, 0))
+    def draw(self, win):
+        #print('../assets/hangman_%s.png' % (str(self.state)))
+        image = pygame.image.load('../assets/hangman_%s.png' % (str(self.state)))
+        win.blit(image, (0, 0))
         pass
