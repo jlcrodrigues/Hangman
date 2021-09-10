@@ -18,14 +18,19 @@ class Game:
     def render(self, win):
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         
+        #####Draw the playing word#####
         self.word.draw(win)
+
+        #####Render the menu#####
         if self.menu:
             win.blit(MENU, (0,0))
+
+        
         if len(self.player_text) <= 1:
             text= font.render(self.player_text, 1, WHITE)
             win.blit(text, (100, 100)) #player text
 
-        #draw the used letters
+        #####Render the alphabet in the bottom#####
         pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
         pos_y = 500
         for i in ALPHABET:
@@ -40,23 +45,29 @@ class Game:
             if i == 'm': 
                 pos_y += LETTER_SIZE + 1
                 pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
-        
-        #for i in self.word.used_letters:            
-         #   text = font.render(i, 1, WHITE)
-          #  win.blit(text, (pos_x + (text.get_width() / 2), 4*SCREEN_HEIGHT / 5))         
-           # pos_x += LETTER_SIZE
 
-        #draw the hangman
+        ######Draw the hangman#####
         self.hangman.draw(win)
 
-        #draw win or lose
+        #####Display game over messages#####
+        if self.hangman.state == 8:
+            text = font.render('You lose!', True, WHITE)
+            win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
+        if not '_' in self.word.filled_letters:
+            text = font.render('You win!', 1, WHITE)
+            win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
+
+        #####Render buttons####
+
+        #go back to menu button
+        text = font.render(' <', True, WHITE)
+        win.blit(text, (0, 0))
+
+        #game over buttons
         if self.over:
-            if self.hangman.state == 8:
-                text = font.render('You lose!', True, WHITE)
-                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
-            if not '_' in self.word.filled_letters:
-                text = font.render('You win!', 1, WHITE)
-                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
+            text = font.render("Menu", True, WHITE)
+            text = font.render("Restart", True, WHITE)
+
 
     def handle_envents(self):
         mouse = pygame.mouse.get_pos()
