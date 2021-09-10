@@ -32,7 +32,7 @@ class Word:
 
     def draw(self, win):
         '''Renders each letter from filled_letters to win.'''
-        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (self.length / 2)
+        pos_x = SCREEN_WIDTH / 2 
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         for i in self.filled_letters:            
             text = font.render(i, True, WHITE, BLACK)

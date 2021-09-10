@@ -12,6 +12,7 @@ class Game:
         self.over = False
         self.play_button = Button("Play", [200, 400])
         self.return_button = Button(" <", [0, 0])
+        self.restart_button = Button("Restart", [50, 0])
 
     def start(self):
         self.word = Word()
@@ -69,6 +70,7 @@ class Game:
             #####Render buttons####
 
             self.return_button.render(win)
+            self.restart_button.render(win)
 
             #game over buttons
             if self.over:
@@ -93,7 +95,11 @@ class Game:
             click = pygame.mouse.get_pressed()
 
             if self.menu: self.play_button.click(mouse, click[0])
-            self.return_button.click(mouse, click[0])
+            if not self.menu: 
+                self.return_button.click(mouse, click[0])
+                self.restart_button.click(mouse, click[0])
+            #print("PLAY------", self.play_button.released)
+            #print("RETURN----", self.return_button.released)
             
             if event.type == pygame.KEYDOWN:
                 if not self.menu:
@@ -105,12 +111,17 @@ class Game:
     def run_login(self):
         '''Executes the game logic.'''
         if self.menu:
-            if self.play_button.pressed:
+            if self.play_button.released:
+                self.play_button.released = False
                 self.menu = False
                 self.start()
         else:
-            if self.return_button.pressed:
+            if self.return_button.released:
+                self.return_button.released = False
                 self.menu = True
+            if self.restart_button.released:
+                self.restart_button.released = False
+                self.start()
             if len(self.player_text) == 1 and not self.over:
                 #print("ENTER")
                 if not self.word.fill(self.player_text):
