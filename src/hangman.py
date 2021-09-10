@@ -13,6 +13,5 @@ class Hangman:
 
     def draw(self, win):
         #print('../assets/hangman_%s.png' % (str(self.state)))
-        image = pygame.image.load('../assets/hangman_%s.png' % (str(self.state)))
-        win.blit(image, (0, 0))
-        pass
+        image = pygame.image.load('../assets/hangman%s.png' % (str(self.state)))
+        win.blit(image, (123, 0))

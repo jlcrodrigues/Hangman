@@ -33,9 +33,9 @@ class Word:
     def draw(self, win):
         '''Renders each letter from filled_letters to win.'''
         pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (self.length / 2)
-        font = pygame.font.SysFont((FONT_NAME), LETTER_SIZE)
+        font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         for i in self.filled_letters:            
-            text = font.render(i, 1, WHITE)
+            text = font.render(i, True, WHITE, BLACK)
             win.blit(text, (pos_x + (text.get_width() / 2), SCREEN_HEIGHT / 2))         
             pos_x += LETTER_SIZE
         pygame.display.update()
