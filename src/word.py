@@ -38,4 +38,3 @@ class Word:
             text = font.render(i, True, WHITE, BLACK)
             win.blit(text, (pos_x + (text.get_width() / 2), SCREEN_HEIGHT / 2))         
             pos_x += LETTER_SIZE
-        pygame.display.update()

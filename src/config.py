@@ -8,12 +8,11 @@ SCREEN_HEIGHT = 600
 
 LETTER_SIZE = 40
 
-MENU = True
-
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+GREY = (170, 170, 170)
 
 FONT_NAME = "../assets/font2.ttf"
 

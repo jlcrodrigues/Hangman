@@ -20,7 +20,7 @@ def main():
         clock.tick(60)
         game.render(win)
         game.handle_envents()
-        game.play()
+        game.run_login()
 
     
     pygame.quit()
