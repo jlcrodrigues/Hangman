@@ -26,7 +26,7 @@ def main():
         run = game.handle_envents()
 
         #Execute all the game logic
-        game.run_login()
+        game.run_logic()
 
     pygame.quit()
     
