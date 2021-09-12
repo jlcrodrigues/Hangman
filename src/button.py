@@ -13,14 +13,22 @@ class Button:
       self.hitbox = [coords[0], coords[0] + self.display.get_width(), coords[1], coords[1] + self.display.get_height()]
 
    def render(self, win):
+      '''Renders the button on the screen.'''
       win.blit(self.display, self.coords)
 
    def set_x(self, x):
+      '''Changes the x coordinate of the button.'''
       self.coords[0] = x
       self.hitbox[0] = x
       self.hitbox[1] = x + self.display.get_width()
 
    def click(self, pos, mouse_down):
+      '''Holds the logic for when the button is clicked.
+      
+         Parameters:
+         @pos - Mouse's Coordinates.
+         @mouse_down - True if the mouse if being pressed.
+      '''
       if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1] and mouse_down: #clicked in the button
          if pos[1] > self.hitbox[2] and pos[1] < self.hitbox[3]:
             self.pressed = True

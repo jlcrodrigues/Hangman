@@ -1,6 +1,5 @@
-'''This should be used to set constants and what not'''
+'''Holds all constants needed for the game.'''
 
-hello_world = "Hello World"
 list_words = ['DOG', 'CAT', 'MOSCOW', 'APPLE']
 
 SCREEN_WIDTH = 600

@@ -15,14 +15,16 @@ class Game:
         self.restart_button = Button("Restart", [50, 0])
 
     def start(self):
+        '''Starts the game.'''
         self.word = Word()
         self.menu = False
         self.hangman = Hangman()
         self.over = False
 
-        print(self.word.letters)
+        #print(self.word.letters) #print the solution
 
     def render(self, win):
+        '''Renders everything to the screen.'''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)    
 
         #####Render the menu#####
@@ -47,7 +49,7 @@ class Game:
                 elif i in self.word.filled_letters:
                     text = font.render(i, 1, BLACK)
                 
-                win.blit(text, (pos_x + (text.get_width() / 2), pos_y))         
+                win.blit(text, (pos_x - (text.get_width() / 2), pos_y))         
                 pos_x += LETTER_SIZE
                 if i == 'm': 
                     pos_y += LETTER_SIZE + 1
@@ -68,28 +70,24 @@ class Game:
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
 
             #####Render buttons####
-
             self.return_button.render(win)
             self.restart_button.render(win)
-
-            #game over buttons
-            if self.over:
-                text = font.render("Menu", True, WHITE)
-                text = font.render("Restart", True, WHITE)
-
-            
         
         pygame.display.update()
 
 
     def handle_envents(self):
+        '''Handles key and mouse presses.
+        
+           @return - False if the exit button was pressed else True.
+        '''
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                return False
                 pygame.quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                #self.play_button.click(mouse)
                 pass
 
             click = pygame.mouse.get_pressed()
@@ -98,32 +96,36 @@ class Game:
             if not self.menu: 
                 self.return_button.click(mouse, click[0])
                 self.restart_button.click(mouse, click[0])
-            #print("PLAY------", self.play_button.released)
-            #print("RETURN----", self.return_button.released)
             
             if event.type == pygame.KEYDOWN:
                 if not self.menu:
-                    #handle lowercase and uppercase
                     if len(self.player_text) < 1 :
                         self.player_text = pygame.key.name(event.key).lower()
                         if self.player_text not in ALPHABET: self.player_text = ""
+                    
+        return True
  
     def run_login(self):
         '''Executes the game logic.'''
         if self.menu:
-            if self.play_button.released:
+            #start the game button
+            if self.play_button.released: 
                 self.play_button.released = False
                 self.menu = False
                 self.start()
         else:
-            if self.return_button.released:
+            #return to menu button
+            if self.return_button.released: 
                 self.return_button.released = False
                 self.menu = True
+
+            #restart button
             if self.restart_button.released:
                 self.restart_button.released = False
                 self.start()
+
+            #handling the guessing
             if len(self.player_text) == 1 and not self.over:
-                #print("ENTER")
                 if not self.word.fill(self.player_text):
                     self.used_letters.append(self.player_text)
                     if self.hangman.state < 8: self.hangman.state += 1
@@ -131,5 +133,3 @@ class Game:
                 
             if self.hangman.state == 8 or not '_' in self.word.filled_letters:
                 self.over = True
-
-                    

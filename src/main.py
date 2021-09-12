@@ -18,11 +18,16 @@ def main():
     run = True
     while run:
         clock.tick(60)
+
+        #Render everything to the screen
         game.render(win)
-        game.handle_envents()
+
+        #Handle key presses and check if the window was closed
+        run = game.handle_envents()
+
+        #Execute all the game logic
         game.run_login()
 
-    
     pygame.quit()
     
 if __name__ == '__main__':
