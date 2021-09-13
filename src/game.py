@@ -187,6 +187,7 @@ class Game:
                 self.menu = True
                 self.playing = False
                 self.settings = False
+                self.help = False
 
             if self.settings:
                 if self.language == "english": self.en_button.press()
