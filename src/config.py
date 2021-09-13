@@ -18,5 +18,5 @@ FONT_NAME = "../assets/fonts/font2.ttf"
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
-EN_DIC = {"play" : "Play", "settings" : "Settings", "language" : "Language", "lost" : "You lose!", "won" : "You won!"}
-PT_DIC = {"play" : "Jogar", "settings" : "Definicoes", "language" : "Lingua", "lost" : "Perdeste!", "won" : "Ganhaste!"}
+EN_DIC = {"play" : "Play", "settings" : "Settings", "language" : "Language", "lost" : "You lose!", "won" : "You won!", "help" : "Help"}
+PT_DIC = {"play" : "Jogar", "settings" : "Definicoes", "language" : "Lingua", "lost" : "Perdeste!", "won" : "Ganhaste!", "help" : "Ajuda"}

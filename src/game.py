@@ -9,6 +9,7 @@ class Game:
         self.menu = True
         self.settings = False
         self.playing = False
+        self.help = False
         self.player_text = "" #current input from player
         self.used_letters = []
         self.over = False
@@ -19,6 +20,7 @@ class Game:
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
         self.restart_button = Button("R", [50, 0], LETTER_SIZE)
         self.settings_button = Button(self.key_words["settings"], [200, 450], LETTER_SIZE)
+        self.help_button = Button(self.key_words["help"], [200, 500], LETTER_SIZE)
         self.pt_button = Button("PT", (SCREEN_WIDTH - 100, 200), LETTER_SIZE2)
         self.en_button = Button("EN", (SCREEN_WIDTH - 200, 200), LETTER_SIZE2)
         self.en_button.press()
@@ -52,12 +54,18 @@ class Game:
             self.settings_button.set_text(self.key_words["settings"])
             self.settings_button.render(win)
 
+            #menu help button
+            self.help_button.set_x(SCREEN_WIDTH / 2 - self.help_button.width / 2)
+            self.help_button.set_text(self.key_words["help"])
+            self.help_button.render(win)
+
         elif self.settings:
             win.fill(BLACK)
 
             #Render the tab title
             text = font.render(self.key_words["settings"], True, WHITE)
             win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
+
             self.return_button.render(win)
 
             #Render the language options
@@ -65,6 +73,15 @@ class Game:
             win.blit(text, (50, 200))
             self.pt_button.render(win)
             self.en_button.render(win)
+
+        elif self.help:
+            win.fill(BLACK)
+
+            #Render the tab title
+            text = font.render(self.key_words["help"], True, WHITE)
+            win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
+
+            self.return_button.render(win)
 
         elif self.playing:
             win.fill(BLACK)
@@ -125,6 +142,7 @@ class Game:
             if self.menu: 
                 self.play_button.click(mouse, click[0])
                 self.settings_button.click(mouse, click[0])
+                self.help_button.click(mouse, click[0])
             else:
                 self.return_button.click(mouse, click[0])
                 if self.settings:
@@ -156,6 +174,12 @@ class Game:
                 self.settings_button.released = False
                 self.menu = False
                 self.settings = True
+
+            if self.help_button.released:
+                self.help_button.released = False
+                self.menu = False
+                self.help = True
+
         else:
             #return to menu button
             if self.return_button.released: 
