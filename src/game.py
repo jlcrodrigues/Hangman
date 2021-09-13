@@ -6,17 +6,22 @@ from button import Button
 
 class Game:
     def __init__(self):
-        self.menu = False
-        self.settings = True
+        self.menu = True
+        self.settings = False
         self.playing = False
         self.player_text = "" #current input from player
         self.used_letters = []
         self.over = False
+        self.language = "english"
+        self.key_words = EN_DIC #holds all key words depending on the active language
 
-        self.play_button = Button("Play", [200, 400])
-        self.return_button = Button(" <", [0, 0])
-        self.restart_button = Button("Restart", [50, 0])
-        self.settings_button = Button("Settings", [200, 450])
+        self.play_button = Button(self.key_words["play"], [200, 400], LETTER_SIZE)
+        self.return_button = Button(" <", [0, 0], LETTER_SIZE)
+        self.restart_button = Button("R", [50, 0], LETTER_SIZE)
+        self.settings_button = Button(self.key_words["settings"], [200, 450], LETTER_SIZE)
+        self.pt_button = Button("PT", (SCREEN_WIDTH - 100, 200), LETTER_SIZE2)
+        self.en_button = Button("EN", (SCREEN_WIDTH - 200, 200), LETTER_SIZE2)
+        self.en_button.press()
 
     def start(self):
         '''Starts the game.'''
@@ -29,7 +34,8 @@ class Game:
 
     def render(self, win):
         '''Renders everything to the screen.'''
-        font = pygame.font.Font(FONT_NAME, LETTER_SIZE)    
+        font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
+        font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)    
 
         #####Render the menu#####
         if self.menu:
@@ -38,19 +44,27 @@ class Game:
 
             #menu play button
             self.play_button.set_x(SCREEN_WIDTH / 2 - self.play_button.width / 2)
+            self.play_button.set_text(self.key_words["play"])
             self.play_button.render(win)
 
             #menu settings button
             self.settings_button.set_x(SCREEN_WIDTH / 2 - self.settings_button.width / 2)
+            self.settings_button.set_text(self.key_words["settings"])
             self.settings_button.render(win)
 
         elif self.settings:
             win.fill(BLACK)
 
             #Render the tab title
-            text = font.render("Settings", True, WHITE)
+            text = font.render(self.key_words["settings"], True, WHITE)
             win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
             self.return_button.render(win)
+
+            #Render the language options
+            text = font2.render(self.key_words["language"], True, WHITE)
+            win.blit(text, (50, 200))
+            self.pt_button.render(win)
+            self.en_button.render(win)
 
         elif self.playing:
             win.fill(BLACK)
@@ -79,10 +93,10 @@ class Game:
 
             #####Display game over messages#####
             if self.hangman.state == 8:
-                text = font.render('You lose!', True, WHITE)
+                text = font.render(self.key_words["lost"], True, WHITE)
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
             if not '_' in self.word.filled_letters:
-                text = font.render('You win!', 1, WHITE)
+                text = font.render(self.key_words["won"], 1, WHITE)
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
 
             #####Render buttons####
@@ -113,6 +127,9 @@ class Game:
                 self.settings_button.click(mouse, click[0])
             else:
                 self.return_button.click(mouse, click[0])
+                if self.settings:
+                    self.pt_button.click(mouse, click[0])
+                    self.en_button.click(mouse, click[0])
                 if self.playing: 
                     self.restart_button.click(mouse, click[0])
             
@@ -146,6 +163,20 @@ class Game:
                 self.menu = True
                 self.playing = False
                 self.settings = False
+
+            if self.settings:
+                if self.language == "english": self.en_button.press()
+                else: self.pt_button.press()
+                
+                if self.pt_button.released:
+                    self.pt_button.released = False
+                    self.language = "portuguese"
+                    self.key_words = PT_DIC
+
+                if self.en_button.released:
+                    self.en_button.released = False
+                    self.language = "english"
+                    self.key_words = EN_DIC
 
             if self.playing:
                 #restart button

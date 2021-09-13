@@ -2,8 +2,8 @@ import pygame
 from config import *
 
 class Button:
-   def __init__(self, text, coords):
-      self.font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
+   def __init__(self, text, coords, letter_size):
+      self.font = pygame.font.Font(FONT_NAME, letter_size)
       self.text = text    
       self.display = self.font.render(text, True, WHITE)
       self.coords = coords
@@ -21,6 +21,15 @@ class Button:
       self.coords[0] = x
       self.hitbox[0] = x
       self.hitbox[1] = x + self.display.get_width()
+
+   def set_text(self, text):
+      '''Changes the button's text.'''
+      self.text = text
+      self.display = self.font.render(text, True, WHITE)
+
+   def press(self):
+      '''Makes the button appear highlighted.'''
+      self.display = self.font.render(self.text, True, GREY)
 
    def click(self, pos, mouse_down):
       '''Holds the logic for when the button is clicked.
