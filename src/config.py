@@ -13,6 +13,6 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 GREY = (170, 170, 170)
 
-FONT_NAME = "../assets/font2.ttf"
+FONT_NAME = "../assets/fonts/font2.ttf"
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"

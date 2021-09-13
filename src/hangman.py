@@ -12,5 +12,5 @@ class Hangman:
     def draw(self, win):
         '''Renders the current hangman state.'''
         if self.state:
-            image = pygame.image.load('../assets/hangman%s.png' % (str(self.state)))
+            image = pygame.image.load('../assets/images/hangman%s.png' % (str(self.state)))
             win.blit(image, (123, 0))

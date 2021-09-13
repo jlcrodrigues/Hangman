@@ -33,7 +33,7 @@ class Game:
 
         #####Render the menu#####
         if self.menu:
-            menu_img = pygame.image.load("../assets/menu.png")
+            menu_img = pygame.image.load("../assets/images/menu.png")
             win.blit(menu_img, (0,0))
 
             #menu play button
