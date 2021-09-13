@@ -75,8 +75,9 @@ class Game:
             self.en_button.render(win)
 
         elif self.help:
-            win.fill(BLACK)
-
+            image = pygame.image.load('../assets/images/help_%s.png' % (str(self.language)))
+            win.blit(image, (0, 0))
+           
             #Render the tab title
             text = font.render(self.key_words["help"], True, WHITE)
             win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))

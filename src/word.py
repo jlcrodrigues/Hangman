@@ -20,12 +20,13 @@ class Word:
 
         @return - True if the letter belongs in the solution.
         '''
+        if letter in self.used_letters: return True
         if letter in self.letters:
             for i in range(len(self.letters)):
                 if self.letters[i] == letter.lower():
                     self.filled_letters[i] = letter.lower()
             return True
-        elif letter.isalpha():
+        elif letter.isalpha() and letter not in self.used_letters:
             self.used_letters.append(letter.lower())
         return False
 
