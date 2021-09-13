@@ -113,7 +113,7 @@ class Game:
             if self.hangman.state == 8:
                 text = font.render(self.key_words["lost"], True, WHITE)
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
-            if not '_' in self.word.filled_letters:
+            elif not '_' in self.word.filled_letters:
                 text = font.render(self.key_words["won"], 1, WHITE)
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
 
@@ -133,7 +133,6 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-                pygame.quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pass
@@ -219,3 +218,4 @@ class Game:
                     
                 if self.hangman.state == 8 or not '_' in self.word.filled_letters:
                     self.over = True
+                    self.word.solve()

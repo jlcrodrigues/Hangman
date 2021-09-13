@@ -8,9 +8,13 @@ class Word:
         #theme could be a parameter
         self.letters = random.choice(list_words).lower()
         
-        self.filled_letters = ['_' for x in self.letters] #the current state of the word
+        self.filled_letters = [x if x in "- " else '_' for x in self.letters] #the current state of the word
         self.length = len(self.letters)
         self.used_letters = []
+
+    def solve(self):
+        '''Fills the entire word.'''
+        self.filled_letters = self.letters
 
     def fill(self, letter):
         '''Replaces a letter in the word being guessed if it belongs.

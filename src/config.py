@@ -1,6 +1,10 @@
 '''Holds all constants needed for the game.'''
 
-list_words = ['MARGARIDA']
+list_words = ['ola tudo bem-bem']
+
+with open("../assets/words/english/animals.txt", "r") as input_file:
+    list_words = [x[:-1] for x in input_file.readlines()] #ignore the \n
+
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
