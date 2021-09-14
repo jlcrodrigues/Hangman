@@ -16,13 +16,16 @@ class Game:
         self.language = "english"
         self.key_words = EN_DIC #holds all key words depending on the active language
 
-        self.play_button = Button(self.key_words["play"], [200, 400], LETTER_SIZE)
+        self.play_button = Button("play", [200, 400], LETTER_SIZE)
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
         self.restart_button = Button("R", [50, 0], LETTER_SIZE)
-        self.settings_button = Button(self.key_words["settings"], [200, 450], LETTER_SIZE)
-        self.help_button = Button(self.key_words["help"], [200, 500], LETTER_SIZE)
+        self.settings_button = Button("settings", [200, 450], LETTER_SIZE)
+        self.help_button = Button("help", [200, 500], LETTER_SIZE)
         self.pt_button = Button("PT", (SCREEN_WIDTH - 100, 200), LETTER_SIZE2)
         self.en_button = Button("EN", (SCREEN_WIDTH - 200, 200), LETTER_SIZE2)
+
+        self.buttons = [self.play_button, self.return_button, self.restart_button, self.settings_button, self.help_button, self.pt_button, self.en_button]
+
         self.en_button.press()
 
     def start(self):
@@ -34,10 +37,18 @@ class Game:
 
         #print(self.word.letters) #print the solution
 
+    def update_buttons(self):
+        '''Changes all the buttons display to the current language (if needed).'''
+        self.buttons = [self.play_button, self.return_button, self.restart_button, self.settings_button, self.help_button, self.pt_button, self.en_button]
+        for i in self.buttons:
+            i.set_text(self.key_words[i.text])
+
     def render(self, win):
         '''Renders everything to the screen.'''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)    
+
+        self.update_buttons()
 
         #####Render the menu#####
         if self.menu:
@@ -45,81 +56,75 @@ class Game:
             win.blit(menu_img, (0,0))
 
             #menu play button
-            self.play_button.set_x(SCREEN_WIDTH / 2 - self.play_button.width / 2)
-            self.play_button.set_text(self.key_words["play"])
+            self.play_button.center()
             self.play_button.render(win)
 
             #menu settings button
-            self.settings_button.set_x(SCREEN_WIDTH / 2 - self.settings_button.width / 2)
-            self.settings_button.set_text(self.key_words["settings"])
+            self.settings_button.center()
             self.settings_button.render(win)
 
             #menu help button
-            self.help_button.set_x(SCREEN_WIDTH / 2 - self.help_button.width / 2)
-            self.help_button.set_text(self.key_words["help"])
+            self.help_button.center()
             self.help_button.render(win)
 
-        elif self.settings:
-            win.fill(BLACK)
-
-            #Render the tab title
-            text = font.render(self.key_words["settings"], True, WHITE)
-            win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
-
-            self.return_button.render(win)
-
-            #Render the language options
-            text = font2.render(self.key_words["language"], True, WHITE)
-            win.blit(text, (50, 200))
-            self.pt_button.render(win)
-            self.en_button.render(win)
-
         elif self.help:
-            image = pygame.image.load('../assets/images/help_%s.png' % (str(self.language)))
-            win.blit(image, (0, 0))
-           
-            #Render the tab title
-            text = font.render(self.key_words["help"], True, WHITE)
-            win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
+                image = pygame.image.load('../assets/images/help_%s.png' % (str(self.language)))
+                win.blit(image, (0, 0))
 
-            self.return_button.render(win)
-
-        elif self.playing:
+                self.return_button.render(win)
+            
+                #Render the tab title
+                text = font.render(self.key_words["help"], True, WHITE)
+                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
+        
+        else:
             win.fill(BLACK)
-
-            #####Render the alphabet in the bottom#####
-            pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
-            pos_y = 500
-            for i in ALPHABET:
-                text = font.render(i, 1, WHITE)
-                if i in self.word.used_letters:
-                    text = font.render(i, 1, BLACK)
-                elif i in self.word.filled_letters:
-                    text = font.render(i, 1, BLACK)
-                
-                win.blit(text, (pos_x - (text.get_width() / 2), pos_y))         
-                pos_x += LETTER_SIZE
-                if i == 'm': 
-                    pos_y += LETTER_SIZE + 1
-                    pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
-
-            ######Draw the hangman#####
-            self.hangman.draw(win)
-
-            #####Draw the playing word#####
-            self.word.draw(win)
-
-            #####Display game over messages#####
-            if self.hangman.state == 8:
-                text = font.render(self.key_words["lost"], True, WHITE)
-                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
-            elif not '_' in self.word.filled_letters:
-                text = font.render(self.key_words["won"], 1, WHITE)
-                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
-
-            #####Render buttons####
             self.return_button.render(win)
-            self.restart_button.render(win)
+
+            if self.settings:
+                #Render the tab title
+                text = font.render(self.key_words["settings"], True, WHITE)
+                win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
+
+                #Render the language options
+                text = font2.render(self.key_words["language"], True, WHITE)
+                win.blit(text, (50, 200))
+                self.pt_button.render(win)
+                self.en_button.render(win)
+
+            elif self.playing: 
+                #####Render the alphabet in the bottom#####
+                pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
+                pos_y = 500
+                for i in ALPHABET:
+                    text = font.render(i, 1, WHITE)
+                    if i in self.word.used_letters:
+                        text = font.render(i, 1, BLACK)
+                    elif i in self.word.filled_letters:
+                        text = font.render(i, 1, BLACK)
+                    
+                    win.blit(text, (pos_x - (text.get_width() / 2), pos_y))         
+                    pos_x += LETTER_SIZE
+                    if i == 'm': 
+                        pos_y += LETTER_SIZE + 1
+                        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
+
+                ######Draw the hangman#####
+                self.hangman.draw(win)
+
+                #####Draw the playing word#####
+                self.word.draw(win)
+
+                #####Display game over messages#####
+                if self.hangman.state == 8:
+                    text = font.render(self.key_words["lost"], True, WHITE)
+                    win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
+                elif not '_' in self.word.filled_letters:
+                    text = font.render(self.key_words["won"], 1, WHITE)
+                    win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 360))
+
+                #####Render buttons####
+                self.restart_button.render(win)
         
         pygame.display.update()
 

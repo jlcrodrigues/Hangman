@@ -16,6 +16,12 @@ class Button:
       '''Renders the button on the screen.'''
       win.blit(self.display, self.coords)
 
+   def center(self):
+      '''Centers the button horizontally.'''
+      self.coords[0] = SCREEN_WIDTH / 2 - self.width / 2
+      self.hitbox[0] = self.coords[0]
+      self.hitbox[1] = self.hitbox[0] + self.width
+
    def set_x(self, x):
       '''Changes the x coordinate of the button.'''
       self.coords[0] = x
@@ -24,7 +30,7 @@ class Button:
 
    def set_text(self, text):
       '''Changes the button's text.'''
-      self.text = text
+      #self.text = text
       self.display = self.font.render(text, True, WHITE)
 
    def press(self):
