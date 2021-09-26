@@ -11,6 +11,8 @@ def main():
 
     win = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     pygame.display.set_caption("Hangman")
+    icon = pygame.image.load("../assets/images/icon.png")
+    pygame.display.set_icon(icon)
     clock = pygame.time.Clock()
 
     game = Game()

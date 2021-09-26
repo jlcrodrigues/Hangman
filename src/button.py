@@ -23,6 +23,11 @@ class Button:
       self.hitbox[0] = self.coords[0]
       self.hitbox[1] = self.hitbox[0] + self.width
 
+   def allign_right(self, distance):
+      self.coords[0] = SCREEN_WIDTH - distance - self.width
+      self.hitbox[0] = self.coords[0]
+      self.hitbox[1] = self.hitbox[0] + self.width
+
    def set_x(self, x):
       '''Changes the x coordinate of the button.'''
       self.coords[0] = x
@@ -64,8 +69,8 @@ class Button:
       else:
          self.unpress()
          self.clicked = False
-      if not mouse_down: 
+      if not mouse_down:
          self.clicked = False
          self.held = False
       
-         
+      

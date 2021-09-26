@@ -13,16 +13,20 @@ class Game:
         self.player_text = "" #current input from player
         self.used_letters = []
         self.over = False
+        self.dark_theme = True
         self.language = "english"
         self.key_words = EN_DIC #holds all key words depending on the active language
+
+        self.images = {}
 
         self.play_button = Button("play", [200, 400], LETTER_SIZE)
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
         self.restart_button = Button("R", [50, 0], LETTER_SIZE)
         self.settings_button = Button("settings", [200, 450], LETTER_SIZE)
         self.help_button = Button("help", [200, 500], LETTER_SIZE)
-        self.pt_button = Button("PT", (SCREEN_WIDTH - 100, 200), LETTER_SIZE2)
-        self.en_button = Button("EN", (SCREEN_WIDTH - 200, 200), LETTER_SIZE2)
+        self.pt_button = Button("PT", [SCREEN_WIDTH - 100, 200], LETTER_SIZE2)
+        self.en_button = Button("EN", [SCREEN_WIDTH - 200, 200], LETTER_SIZE2)
+        self.theme_button = Button("ON" ,[SCREEN_WIDTH - 100, 300], LETTER_SIZE2)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button, self.settings_button, self.help_button, self.pt_button, self.en_button]
 
@@ -43,12 +47,17 @@ class Game:
         for i in self.buttons:
             i.set_text(self.key_words[i.text])
 
+    def get_images(self):
+        if self.dark_theme:
+            self.images["menu"] = pygame.image.load("../assets/images/menu.png")
+
     def render(self, win):
         '''Renders everything to the screen.'''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
-        font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)    
+        font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)
 
         self.update_buttons()
+        self.get_images()
 
         #####Render the menu#####
         if self.menu:
@@ -89,8 +98,16 @@ class Game:
                 #Render the language options
                 text = font2.render(self.key_words["language"], True, WHITE)
                 win.blit(text, (50, 200))
+                self.pt_button.allign_right(50)
                 self.pt_button.render(win)
+                self.en_button.set_x(self.pt_button.coords[0] - 100)
                 self.en_button.render(win)
+
+                text = font2.render(self.key_words["dark mode"], True, WHITE)
+                win.blit(text, (50, 300))
+                self.theme_button.allign_right(50)
+                self.theme_button.render(win)
+                
 
             elif self.playing: 
                 #####Render the alphabet in the bottom#####
@@ -135,6 +152,7 @@ class Game:
            @return - False if the exit button was pressed else True.
         '''
         mouse = pygame.mouse.get_pos()
+        #print(mouse)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
@@ -153,6 +171,7 @@ class Game:
                 if self.settings:
                     self.pt_button.click(mouse, click[0])
                     self.en_button.click(mouse, click[0])
+                    self.theme_button.click(mouse, click[0])
                 if self.playing: 
                     self.restart_button.click(mouse, click[0])
             
@@ -205,6 +224,14 @@ class Game:
                 if self.en_button.clicked:
                     self.language = "english"
                     self.key_words = EN_DIC
+
+                if self.theme_button.clicked:
+                    if self.dark_theme:
+                        self.dark_theme = False
+                        self.theme_button.set_text("OFF")
+                    else:
+                        self.dark_theme = True
+                        self.theme_button.set_text("ON")
 
             if self.playing:
                 #restart button
