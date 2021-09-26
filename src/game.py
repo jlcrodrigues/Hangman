@@ -168,27 +168,27 @@ class Game:
         '''Executes the game logic.'''
         if self.menu:
             #start the game button
-            if self.play_button.released: 
-                self.play_button.released = False
+            if self.play_button.clicked:
+                self.play_button.clicked = False
                 self.menu = False
                 self.playing = True
                 self.start()
 
             #settings button
-            if self.settings_button.released:
-                self.settings_button.released = False
+            if self.settings_button.clicked:
+                self.settings_button.clicked = False
                 self.menu = False
                 self.settings = True
 
-            if self.help_button.released:
-                self.help_button.released = False
+            if self.help_button.clicked:
+                self.help_button.clicked = False
                 self.menu = False
                 self.help = True
 
         else:
             #return to menu button
-            if self.return_button.released: 
-                self.return_button.released = False
+            if self.return_button.clicked:
+                self.return_button.clicked = False
                 self.menu = True
                 self.playing = False
                 self.settings = False
@@ -198,20 +198,17 @@ class Game:
                 if self.language == "english": self.en_button.press()
                 else: self.pt_button.press()
                 
-                if self.pt_button.released:
-                    self.pt_button.released = False
+                if self.pt_button.clicked:
                     self.language = "portuguese"
                     self.key_words = PT_DIC
 
-                if self.en_button.released:
-                    self.en_button.released = False
+                if self.en_button.clicked:
                     self.language = "english"
                     self.key_words = EN_DIC
 
             if self.playing:
                 #restart button
-                if self.restart_button.released:
-                    self.restart_button.released = False
+                if self.restart_button.clicked:
                     self.start()
 
                 #handling the guessing

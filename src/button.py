@@ -7,8 +7,9 @@ class Button:
       self.text = text    
       self.display = self.font.render(text, True, WHITE)
       self.coords = coords
-      self.released = False
+      self.clicked = False
       self.pressed = False
+      self.held = True
       self.width = self.display.get_width()
       self.hitbox = [coords[0], coords[0] + self.display.get_width(), coords[1], coords[1] + self.display.get_height()]
 
@@ -32,10 +33,18 @@ class Button:
       '''Changes the button's text.'''
       #self.text = text
       self.display = self.font.render(text, True, WHITE)
+      if self.pressed: self.display = self.font.render(text, True, GREY)
 
    def press(self):
       '''Makes the button appear highlighted.'''
       self.display = self.font.render(self.text, True, GREY)
+      self.pressed = True
+
+   def unpress(self):
+      '''Makes the button not appear highlighted.'''
+      self.display = self.font.render(self.text, True, WHITE)
+      self.pressed = False
+      #self.clicked = False
 
    def click(self, pos, mouse_down):
       '''Holds the logic for when the button is clicked.
@@ -44,14 +53,19 @@ class Button:
          @pos - Mouse's Coordinates.
          @mouse_down - True if the mouse if being pressed.
       '''
-      if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1] and mouse_down: #clicked in the button
+      if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1] and not self.held: #clicked in the button
          if pos[1] > self.hitbox[2] and pos[1] < self.hitbox[3]:
-            self.pressed = True
-            self.display = self.font.render(self.text, True, GREY)
-      elif not mouse_down and self.pressed: #mouse lifted after clicking
-         self.released = True
-         self.pressed = False
+            self.press()
+            if mouse_down: 
+               self.clicked = True
+               self.held = True
+         else:
+            self.unpress()
       else:
-         self.released = False
-         self.display = self.font.render(self.text, True, WHITE)
+         self.unpress()
+         self.clicked = False
+      if not mouse_down: 
+         self.clicked = False
+         self.held = False
+      
          
