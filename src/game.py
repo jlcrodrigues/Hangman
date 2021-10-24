@@ -158,8 +158,10 @@ class Game:
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
 
         #####Render the alphabet in the bottom#####
-        pos_x = self.width / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
-        pos_y = 500
+        pos_x = self.width / 2 - LETTER_SIZE * (len(ALPHABET) / 4) + 20
+        #the extra 20 are added because each letter only fills half of the
+        #available size which would leave space to the right
+        pos_y = self.height - 100
         for i in ALPHABET:
             if self.dark_theme: text = font.render(i, 1, WHITE)
             else: text = font.render(i, 1, BLACK)
@@ -174,13 +176,13 @@ class Game:
             if i == 'm':
                 pos_y += LETTER_SIZE + 1
                 pos_x = self.width / 2 - \
-                    LETTER_SIZE * (len(ALPHABET) / 4)
+                    LETTER_SIZE * (len(ALPHABET) / 4) + 20
 
         ######Draw the hangman#####
         self.hangman.draw(win, self.images, self.width)
 
         #####Draw the playing word#####
-        self.word.draw(win, self.dark_theme, self.width)
+        self.word.draw(win, self.dark_theme, self.width, self.height)
 
         #####Display game over messages#####
         if self.hangman.state == 8:
