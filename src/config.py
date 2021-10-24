@@ -26,8 +26,15 @@ ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 EN_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Play",
           "settings" : "Settings", "language" : "Language", "lost" : "You lose!",
           "won" : "You won!", "help" : "Help", "dark mode" : "Dark Mode", "ON" : "ON",
-          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png"}
+          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png",
+          "theme" : "Theme", "difficulty" : "Difficulty", "start" : "Start",
+          "all" : "All", "animals" : "Animals", "capitals" : "Capitals",
+          "countries" : "Countries", "hard" : "Hard Words", "normal" : "Normal"}
+
 PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
           "settings" : "Definicoes", "language" : "Idioma", "lost" : "Perdeste!",
           "won" : "Ganhaste!", "help" : "Ajuda", "dark mode" : "Modo Escuro", "ON" : "ON",
-          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png"}
+          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png",
+          "theme" : "Tema", "difficulty" : "Dificuldade", "start" : "Iniciar",
+          "all" : "Tudo", "animals" : "Animais", "capitals" : "Capitais",
+          "countries" : "Países", "hard" : "Palavras difícies", "normal" : "Normal"}

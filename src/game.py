@@ -11,6 +11,7 @@ class Game:
         self.settings = False
         self.playing = False
         self.help = False
+        self.pre_play = False
         self.player_text = ""  # current input from player
         self.used_letters = []
         self.over = False
@@ -19,10 +20,13 @@ class Game:
         self.key_words = EN_DIC  # holds all key words depending on the active language
         self.width = SCREEN_WIDTH
         self.height = SCREEN_HEIGHT
+        self.theme = "all"
+        self.difficulty = "normal"
 
         self.images = {}
 
         self.play_button = Button("play", [200, 400], LETTER_SIZE)
+        self.start_button = Button("start", [200, 500], LETTER_SIZE)
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
         self.restart_button = Button("../assets/images/restart.png", [50, 5], LETTER_SIZE, True)
         self.settings_button = Button("settings", [200, 450], LETTER_SIZE)
@@ -30,9 +34,14 @@ class Game:
         self.pt_button = Button("PT", [self.width - 100, 200], LETTER_SIZE2)
         self.en_button = Button("EN", [self.width - 200, 200], LETTER_SIZE2)
         self.theme_button = Button("ON", [self.width - 100, 300], LETTER_SIZE2)
+        self.right_button1 = Button(">", [0, 0], LETTER_SIZE)
+        self.right_button2 = Button(">", [0, 0], LETTER_SIZE)
+        self.left_button1 = Button("<", [0, 0], LETTER_SIZE)
+        self.left_button2 = Button("<", [0, 0], LETTER_SIZE)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
-                        self.settings_button, self.help_button, self.pt_button, self.en_button]
+                        self.settings_button, self.help_button, self.pt_button, 
+                        self.en_button, self.start_button]
 
         self.en_button.press()
 
@@ -40,6 +49,7 @@ class Game:
         '''Starts the game.'''
         self.word = Word()
         self.menu = False
+        self.playing = True
         self.hangman = Hangman()
         self.over = False
 
@@ -48,7 +58,8 @@ class Game:
     def update_buttons(self):
         '''Changes all the buttons display to the current language (if needed).'''
         self.buttons = [self.play_button, self.return_button, self.restart_button,
-                        self.settings_button, self.help_button, self.pt_button, self.en_button]
+                        self.settings_button, self.help_button, self.pt_button,
+                        self.en_button, self.start_button]
         for i in self.buttons:
             i.set_text(self.key_words[i.text], self.dark_theme)
 
@@ -196,6 +207,46 @@ class Game:
 
         #####Render buttons####
         self.restart_button.render(win)
+
+    def render_pre_play(self, win):
+        font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
+        font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)
+        
+        # Render the theme options
+        if self.dark_theme: text = font.render(self.key_words["theme"], True, WHITE)
+        else: text = font.render(self.key_words["theme"], True, BLACK)
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 140))
+
+        if self.dark_theme: text = font2.render(self.key_words[self.theme], True, WHITE)
+        else: text = font2.render(self.key_words[self.theme], True, BLACK)
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 80))
+
+        self.right_button1.set_x(self.width / 2 + 100)
+        self.right_button1.set_y(self.height / 2 - 80)
+        self.right_button1.render(win)
+        self.left_button1.set_x(self.width / 2 - 100)
+        self.left_button1.set_y(self.height / 2 - 80)
+        self.left_button1.render(win)
+
+        # Render the difficulty options
+        if self.dark_theme: text = font.render(self.key_words["difficulty"], True, WHITE)
+        else: text = font.render(self.key_words["difficulty"], True, BLACK)
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2))
+
+        if self.dark_theme: text = font2.render(self.key_words[self.difficulty], True, WHITE)
+        else: text = font2.render(self.key_words[self.difficulty], True, BLACK)
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 80))
+
+        self.right_button1.set_x(self.width / 2 + 100)
+        self.right_button1.set_y(self.height / 2 + 80)
+        self.right_button1.render(win)
+        self.left_button1.set_x(self.width / 2 - 100)
+        self.left_button1.set_y(self.height / 2 + 80)
+        self.left_button1.render(win)
+
+        self.start_button.center(self.width)
+        self.start_button.set_y(self.height - 100)
+        self.start_button.render(win)
     
     def render(self, win):
         '''Renders everything to the screen.'''
@@ -224,6 +275,9 @@ class Game:
 
             elif self.playing:
                 self.render_playing(win)
+
+            elif self.pre_play:
+                self.render_pre_play(win)
 
         pygame.display.update()
 
@@ -260,6 +314,8 @@ class Game:
                     self.theme_button.click(mouse, click[0])
                 if self.playing:
                     self.restart_button.click(mouse, click[0])
+                if self.pre_play:
+                    self.start_button.click(mouse, click[0])
 
             if event.type == pygame.KEYDOWN:
                 if self.playing:
@@ -279,8 +335,7 @@ class Game:
             if self.play_button.clicked:
                 self.play_button.clicked = False
                 self.menu = False
-                self.playing = True
-                self.start()
+                self.pre_play = True
 
             # settings button
             if self.settings_button.clicked:
@@ -340,3 +395,8 @@ class Game:
                 if self.hangman.state == 8 or not '_' in self.word.filled_letters:
                     self.over = True
                     self.word.solve()
+
+            if self.pre_play:
+                if self.start_button.check():
+                    self.pre_play = False
+                    self.start()
