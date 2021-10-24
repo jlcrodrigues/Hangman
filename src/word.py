@@ -34,9 +34,9 @@ class Word:
             self.used_letters.append(letter.lower())
         return False
 
-    def draw(self, win, dark_theme):
+    def draw(self, win, dark_theme, width):
         '''Renders each letter from filled_letters.'''
-        pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (self.length / 2)
+        pos_x = width / 2 - LETTER_SIZE * (self.length / 2)
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         for i in self.filled_letters:
             if dark_theme: text = font.render(i, True, WHITE, BLACK)

@@ -10,7 +10,7 @@ def main():
 
     pygame.init()
 
-    win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
     pygame.display.set_caption("Hangman")
     icon = pygame.image.load("../assets/images/icon.png")
     pygame.display.set_icon(icon)

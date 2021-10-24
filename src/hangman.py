@@ -10,8 +10,8 @@ class Hangman:
         '''Returns True if the Hangman is dead.'''
         return self.state == 8
 
-    def draw(self, win, images):
+    def draw(self, win, images, width):
         '''Renders the current hangman state.'''
         if self.state:
             image = images["%s" % (str(self.state))]
-            win.blit(image, (123, 0))
+            win.blit(image, (width / 2 - 177, 0))
