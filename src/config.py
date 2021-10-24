@@ -16,7 +16,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
-GREY = (170, 170, 170)
+GREY = (127, 127, 127)
+GREY1 = (190, 190, 190)
 
 FONT_NAME = "../assets/fonts/font2.ttf"
 

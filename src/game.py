@@ -27,8 +27,7 @@ class Game:
         self.help_button = Button("help", [200, 500], LETTER_SIZE)
         self.pt_button = Button("PT", [SCREEN_WIDTH - 100, 200], LETTER_SIZE2)
         self.en_button = Button("EN", [SCREEN_WIDTH - 200, 200], LETTER_SIZE2)
-        self.theme_button = Button(
-            "ON", [SCREEN_WIDTH - 100, 300], LETTER_SIZE2)
+        self.theme_button = Button("ON", [SCREEN_WIDTH - 100, 300], LETTER_SIZE2)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, self.en_button]
@@ -49,7 +48,7 @@ class Game:
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, self.en_button]
         for i in self.buttons:
-            i.set_text(self.key_words[i.text])
+            i.set_text(self.key_words[i.text], self.dark_theme)
 
     def get_images(self):
         if self.dark_theme:
@@ -136,22 +135,26 @@ class Game:
 
         else:
             win.fill(BLACK)
+            if not self.dark_theme: win.fill(WHITE)
             self.return_button.render(win)
 
             if self.settings:
                 # Render the tab title
-                text = font.render(self.key_words["settings"], True, WHITE)
+                if self.dark_theme: text = font.render(self.key_words["settings"], True, WHITE)
+                else: text = font.render(self.key_words["settings"], True, BLACK)
                 win.blit(text, (SCREEN_WIDTH / 2 - text.get_width() / 2, 0))
 
                 # Render the language options
-                text = font2.render(self.key_words["language"], True, WHITE)
+                if self.dark_theme: text = font2.render(self.key_words["language"], True, WHITE)
+                else: text = font2.render(self.key_words["language"], True, BLACK)
                 win.blit(text, (50, 200))
                 self.pt_button.allign_right(50)
                 self.pt_button.render(win)
                 self.en_button.set_x(self.pt_button.coords[0] - 100)
                 self.en_button.render(win)
 
-                text = font2.render(self.key_words["dark mode"], True, WHITE)
+                if self.dark_theme: text = font2.render(self.key_words["dark mode"], True, WHITE)
+                else: text = font2.render(self.key_words["dark mode"], True, BLACK)
                 win.blit(text, (50, 300))
                 self.theme_button.allign_right(50)
                 self.theme_button.render(win)
@@ -161,11 +164,13 @@ class Game:
                 pos_x = SCREEN_WIDTH / 2 - LETTER_SIZE * (len(ALPHABET) / 4)
                 pos_y = 500
                 for i in ALPHABET:
-                    text = font.render(i, 1, WHITE)
+                    if self.dark_theme: text = font.render(i, 1, WHITE)
+                    else: text = font.render(i, 1, BLACK)
                     if i in self.word.used_letters:
-                        text = font.render(i, 1, BLACK)
+                        if self.dark_theme: text = font.render(i, 1, BLACK)
+                        else: text = font.render(i, 1, WHITE)
                     elif i in self.word.filled_letters:
-                        text = font.render(i, 1, BLACK)
+                        if self.dark_theme: text = font.render(i, 1, WHITE)
 
                     win.blit(text, (pos_x - (text.get_width() / 2), pos_y))
                     pos_x += LETTER_SIZE
@@ -178,7 +183,7 @@ class Game:
                 self.hangman.draw(win, self.images)
 
                 #####Draw the playing word#####
-                self.word.draw(win)
+                self.word.draw(win, self.dark_theme)
 
                 #####Display game over messages#####
                 if self.hangman.state == 8:
@@ -277,17 +282,17 @@ class Game:
                     self.language = "english"
                     self.key_words = EN_DIC
 
-                if self.theme_button.clicked:
+                if self.theme_button.check():
                     if self.dark_theme:
+                        self.theme_button.set_text("OFF", self.dark_theme)
                         self.dark_theme = False
-                        self.theme_button.set_text("OFF")
                     else:
+                        self.theme_button.set_text("ON", self.dark_theme)
                         self.dark_theme = True
-                        self.theme_button.set_text("ON")
 
             if self.playing:
                 # restart button
-                if self.restart_button.clicked:
+                if self.restart_button.check():
                     self.start()
 
                 # handling the guessing

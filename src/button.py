@@ -7,9 +7,9 @@ class Button:
       self.text = text    
       self.display = self.font.render(text, True, WHITE)
       self.coords = coords
-      self.clicked = False
-      self.pressed = False
-      self.held = True
+      self.pointing = False #True if the mouse is over the button
+      self.held = False #True if the mouse is clicking the button
+      self.clicked = False #True if the mouse has been clicked
       self.width = self.display.get_width()
       self.hitbox = [coords[0], coords[0] + self.display.get_width(), coords[1], coords[1] + self.display.get_height()]
 
@@ -34,22 +34,31 @@ class Button:
       self.hitbox[0] = x
       self.hitbox[1] = x + self.display.get_width()
 
-   def set_text(self, text):
+   def set_text(self, text, dark_theme):
       '''Changes the button's text.'''
-      #self.text = text
-      self.display = self.font.render(text, True, WHITE)
-      if self.pressed: self.display = self.font.render(text, True, GREY)
+      if self.pointing: self.display = self.font.render(text, True, GREY)
+      elif self.held: self.display = self.font.render(text, True, RED)
+      else: 
+         if dark_theme: self.display = self.font.render(text, True, WHITE)
+         else: self.display = self.font.render(text, True, BLACK)
+
+   def update(self):
+      '''Makes the button appear highlighted.'''
+      if self.pointing: self.display = self.font.render(self.text, True, GREY)
+      elif self.held: self.display = self.font.render(self.text, True, RED)
+      else: self.display = self.font.render(self.text, True, WHITE)
 
    def press(self):
-      '''Makes the button appear highlighted.'''
-      self.display = self.font.render(self.text, True, GREY)
-      self.pressed = True
-
-   def unpress(self):
       '''Makes the button not appear highlighted.'''
-      self.display = self.font.render(self.text, True, WHITE)
-      self.pressed = False
+      self.pointing = True
+      self.update()
       #self.clicked = False
+
+   def check(self):
+      if self.clicked:
+         self.clicked = False
+         return True
+      return False
 
    def click(self, pos, mouse_down):
       '''Holds the logic for when the button is clicked.
@@ -58,19 +67,16 @@ class Button:
          @pos - Mouse's Coordinates.
          @mouse_down - True if the mouse if being pressed.
       '''
-      if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1] and not self.held: #clicked in the button
+      if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1]: #clicked in the button
          if pos[1] > self.hitbox[2] and pos[1] < self.hitbox[3]:
-            self.press()
-            if mouse_down: 
-               self.clicked = True
-               self.held = True
-         else:
-            self.unpress()
-      else:
-         self.unpress()
-         self.clicked = False
-      if not mouse_down:
-         self.clicked = False
-         self.held = False
-      
+            self.pointing = True
+         else: self.pointing = False
+      else: self.pointing = False
+
+      if self.pointing:
+         if self.held and not mouse_down: self.clicked = True
+         self.held = mouse_down
+
+      #if self.text == 'play': print(self.held)
+      #self.update()
       
