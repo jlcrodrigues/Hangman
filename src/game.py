@@ -24,7 +24,7 @@ class Game:
 
         self.play_button = Button("play", [200, 400], LETTER_SIZE)
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
-        self.restart_button = Button("R", [50, 0], LETTER_SIZE)
+        self.restart_button = Button("../assets/images/restart.png", [50, 5], LETTER_SIZE, True)
         self.settings_button = Button("settings", [200, 450], LETTER_SIZE)
         self.help_button = Button("help", [200, 500], LETTER_SIZE)
         self.pt_button = Button("PT", [self.width - 100, 200], LETTER_SIZE2)
@@ -262,11 +262,13 @@ class Game:
                     self.restart_button.click(mouse, click[0])
 
             if event.type == pygame.KEYDOWN:
-                if not self.menu:
+                if self.playing:
                     if len(self.player_text) < 1:
                         self.player_text = pygame.key.name(event.key).lower()
                         if self.player_text not in ALPHABET:
                             self.player_text = ""
+
+                    if event.key == pygame.K_RETURN: self.start()
 
         return True
 

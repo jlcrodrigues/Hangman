@@ -2,10 +2,12 @@ import pygame
 from config import *
 
 class Button:
-   def __init__(self, text, coords, letter_size):
+   def __init__(self, text, coords, letter_size, is_image = False):
       self.font = pygame.font.Font(FONT_NAME, letter_size)
       self.text = text    
       self.display = self.font.render(text, True, WHITE)
+      if is_image: self.display = pygame.image.load(text)
+      self.is_image = is_image
       self.coords = coords
       self.pointing = False #True if the mouse is over the button
       self.held = False #True if the mouse is clicking the button
@@ -43,11 +45,17 @@ class Button:
 
    def set_text(self, text, dark_theme):
       '''Changes the button's text.'''
-      if self.pointing: self.display = self.font.render(text, True, GREY)
-      elif self.held: self.display = self.font.render(text, True, RED)
-      else: 
-         if dark_theme: self.display = self.font.render(text, True, WHITE)
-         else: self.display = self.font.render(text, True, BLACK)
+      if not self.is_image:
+         if self.pointing: self.display = self.font.render(text, True, GREY)
+         elif self.held: self.display = self.font.render(text, True, RED)
+         else: 
+            if dark_theme: self.display = self.font.render(text, True, WHITE)
+            else: self.display = self.font.render(text, True, BLACK)
+
+      else:
+         if self.pointing: self.display = pygame.image.load(text[:-4] + "_pressed.png")
+         elif dark_theme: self.display = pygame.image.load(text)
+         else: self.display = pygame.image.load(text[:-4] + "_light.png")
 
    def update(self):
       '''Makes the button appear highlighted.'''

@@ -23,5 +23,11 @@ FONT_NAME = "../assets/fonts/font2.ttf"
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
-EN_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Play", "settings" : "Settings", "language" : "Language", "lost" : "You lose!", "won" : "You won!", "help" : "Help", "dark mode" : "Dark Mode", "ON" : "ON", "OFF" : "OFF"}
-PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar", "settings" : "Definicoes", "language" : "Idioma", "lost" : "Perdeste!", "won" : "Ganhaste!", "help" : "Ajuda", "dark mode" : "Modo Escuro", "ON" : "ON", "OFF" : "OFF"}
+EN_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Play",
+          "settings" : "Settings", "language" : "Language", "lost" : "You lose!",
+          "won" : "You won!", "help" : "Help", "dark mode" : "Dark Mode", "ON" : "ON",
+          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png"}
+PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
+          "settings" : "Definicoes", "language" : "Idioma", "lost" : "Perdeste!",
+          "won" : "Ganhaste!", "help" : "Ajuda", "dark mode" : "Modo Escuro", "ON" : "ON",
+          "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png"}
