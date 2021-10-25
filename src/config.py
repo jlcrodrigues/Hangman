@@ -29,7 +29,8 @@ EN_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Play",
           "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png",
           "theme" : "Theme", "difficulty" : "Difficulty", "start" : "Start",
           "all" : "All", "animals" : "Animals", "capitals" : "Capitals",
-          "countries" : "Countries", "hard" : "Hard Words", "normal" : "Normal"}
+          "countries" : "Countries", "hardw" : "Hard Words", "normal" : "Normal",
+          "easy" : "Easy", "hard" : "Hard", "<" : "<", ">" : ">"}
 
 PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
           "settings" : "Definicoes", "language" : "Idioma", "lost" : "Perdeste!",
@@ -37,4 +38,5 @@ PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
           "OFF" : "OFF", "../assets/images/restart.png" : "../assets/images/restart.png",
           "theme" : "Tema", "difficulty" : "Dificuldade", "start" : "Iniciar",
           "all" : "Tudo", "animals" : "Animais", "capitals" : "Capitais",
-          "countries" : "Países", "hard" : "Palavras difícies", "normal" : "Normal"}
+          "countries" : "Países", "hardw" : "Palavras difícies", "normal" : "Normal",
+          "easy" : "Fácil", "hard" : "Difícil", "<" : "<", ">" : ">"}

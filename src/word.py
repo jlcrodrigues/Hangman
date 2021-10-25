@@ -3,18 +3,30 @@ import pygame
 from config import *
 
 class Word:
-    def __init__(self):
-        #maybe we read from a text file here and choose a random word
-        #theme could be a parameter
+    def __init__(self, theme, language, themes):
+        if theme != "all":
+            with open("../assets/words/" + language + "/" + theme + ".txt", "r") as input_file:
+                list_words = [x[:-1] for x in input_file.readlines()] #ignore the \n
+        else:
+            list_words = []
+            for t in themes[1:]:
+                with open("../assets/words/" + language + "/" + t + ".txt", "r") as input_file:
+                    list_words += [x[:-1] for x in input_file.readlines()] #ignore the \n
+        
         self.letters = random.choice(list_words).lower()
         
         self.filled_letters = [x if x in "- " else '_' for x in self.letters] #the current state of the word
         self.length = len(self.letters)
         self.used_letters = []
+        
 
     def solve(self):
         '''Fills the entire word.'''
         self.filled_letters = self.letters
+
+    def solve_letter(self):
+        '''Fills a random letter.'''
+        self.fill(random.choice(list(set(self.letters) - set(self.filled_letters))))
 
     def fill(self, letter):
         '''Replaces a letter in the word being guessed if it belongs.

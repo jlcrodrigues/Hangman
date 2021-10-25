@@ -21,7 +21,9 @@ class Game:
         self.width = SCREEN_WIDTH
         self.height = SCREEN_HEIGHT
         self.theme = "all"
+        self.themes = ["all", "animals", "capitals", "countries", "hardw"]
         self.difficulty = "normal"
+        self.difficulties = ["easy", "normal", "hard"]
 
         self.images = {}
 
@@ -41,25 +43,31 @@ class Game:
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, 
-                        self.en_button, self.start_button]
+                        self.en_button, self.start_button, self.right_button1,
+                        self.right_button2, self.left_button1, self.left_button2]
 
         self.en_button.press()
 
     def start(self):
         '''Starts the game.'''
-        self.word = Word()
+        self.word = Word(self.theme, self.language, self.themes)
         self.menu = False
         self.playing = True
         self.hangman = Hangman()
         self.over = False
 
-        # print(self.word.letters) #print the solution
+        if self.difficulty == "easy":
+            for _ in range(int(self.word.length / 5)):
+                self.word.solve_letter()
+
+        print(self.word.letters) #print the solution
 
     def update_buttons(self):
         '''Changes all the buttons display to the current language (if needed).'''
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button,
-                        self.en_button, self.start_button]
+                        self.en_button, self.start_button, self.right_button1,
+                        self.right_button2, self.left_button1, self.left_button2]
         for i in self.buttons:
             i.set_text(self.key_words[i.text], self.dark_theme)
 
@@ -133,7 +141,7 @@ class Game:
     def render_help(self, win):
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         image = self.images["help_%s" % (str(self.language))]
-        win.blit(image, (self.width / 2 - 300, self.height / 2 - 300))
+        win.blit(image, (self.width / 2 - 300, self.height / 2 - 400))
 
         self.return_button.render(win)
 
@@ -197,13 +205,13 @@ class Game:
 
         #####Display game over messages#####
         if self.hangman.state == 8:
-            text = font.render(self.key_words["lost"], True, WHITE)
-            win.blit(text, (self.width / 2 -
-                        text.get_width() / 2, 360))
+            if self.dark_theme: text = font.render(self.key_words["lost"], True, WHITE)
+            else: text = font.render(self.key_words["lost"], True, BLACK)
+            win.blit(text, (self.width / 2 - text.get_width() / 2, 360))
         elif not '_' in self.word.filled_letters:
-            text = font.render(self.key_words["won"], 1, WHITE)
-            win.blit(text, (self.width / 2 -
-                        text.get_width() / 2, 360))
+            if self.dark_theme: text = font.render(self.key_words["won"], 1, WHITE)
+            else: text = font.render(self.key_words["won"], 1, BLACK)
+            win.blit(text, (self.width / 2 - text.get_width() / 2, 360))
 
         #####Render buttons####
         self.restart_button.render(win)
@@ -215,34 +223,34 @@ class Game:
         # Render the theme options
         if self.dark_theme: text = font.render(self.key_words["theme"], True, WHITE)
         else: text = font.render(self.key_words["theme"], True, BLACK)
-        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 140))
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 200))
 
         if self.dark_theme: text = font2.render(self.key_words[self.theme], True, WHITE)
         else: text = font2.render(self.key_words[self.theme], True, BLACK)
-        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 80))
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 140))
 
-        self.right_button1.set_x(self.width / 2 + 100)
-        self.right_button1.set_y(self.height / 2 - 80)
+        self.right_button1.set_x(self.width / 2 + 150)
+        self.right_button1.set_y(self.height / 2 - 140)
         self.right_button1.render(win)
-        self.left_button1.set_x(self.width / 2 - 100)
-        self.left_button1.set_y(self.height / 2 - 80)
+        self.left_button1.set_x(self.width / 2 - 150)
+        self.left_button1.set_y(self.height / 2 - 140)
         self.left_button1.render(win)
 
         # Render the difficulty options
         if self.dark_theme: text = font.render(self.key_words["difficulty"], True, WHITE)
         else: text = font.render(self.key_words["difficulty"], True, BLACK)
-        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2))
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 - 40))
 
         if self.dark_theme: text = font2.render(self.key_words[self.difficulty], True, WHITE)
         else: text = font2.render(self.key_words[self.difficulty], True, BLACK)
-        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 80))
+        win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 20))
 
-        self.right_button1.set_x(self.width / 2 + 100)
-        self.right_button1.set_y(self.height / 2 + 80)
-        self.right_button1.render(win)
-        self.left_button1.set_x(self.width / 2 - 100)
-        self.left_button1.set_y(self.height / 2 + 80)
-        self.left_button1.render(win)
+        self.right_button2.set_x(self.width / 2 + 150)
+        self.right_button2.set_y(self.height / 2 + 20)
+        self.right_button2.render(win)
+        self.left_button2.set_x(self.width / 2 - 150)
+        self.left_button2.set_y(self.height / 2 + 20)
+        self.left_button2.render(win)
 
         self.start_button.center(self.width)
         self.start_button.set_y(self.height - 100)
@@ -316,6 +324,10 @@ class Game:
                     self.restart_button.click(mouse, click[0])
                 if self.pre_play:
                     self.start_button.click(mouse, click[0])
+                    self.right_button1.click(mouse, click[0])
+                    self.right_button2.click(mouse, click[0])
+                    self.left_button1.click(mouse, click[0])
+                    self.left_button2.click(mouse, click[0])
 
             if event.type == pygame.KEYDOWN:
                 if self.playing:
@@ -390,6 +402,7 @@ class Game:
                         self.used_letters.append(self.player_text)
                         if self.hangman.state < 8:
                             self.hangman.state += 1
+                            if self.difficulty == "hard": self.hangman.state += 1
                 self.player_text = ""
 
                 if self.hangman.state == 8 or not '_' in self.word.filled_letters:
@@ -400,3 +413,12 @@ class Game:
                 if self.start_button.check():
                     self.pre_play = False
                     self.start()
+
+                if self.right_button1.check():
+                    self.theme = self.themes[min(len(self.themes) - 1, self.themes.index(self.theme) + 1)]
+                if self.left_button1.check():
+                    self.theme = self.themes[max(0, self.themes.index(self.theme) - 1)]
+                if self.right_button2.check():
+                    self.difficulty = self.difficulties[min(len(self.difficulties) - 1, self.difficulties.index(self.difficulty) + 1)]
+                if self.left_button2.check():
+                    self.difficulty = self.difficulties[max(0, self.difficulties.index(self.difficulty) - 1)]
