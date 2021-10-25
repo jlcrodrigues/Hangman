@@ -30,7 +30,8 @@ EN_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Play",
           "theme" : "Theme", "difficulty" : "Difficulty", "start" : "Start",
           "all" : "All", "animals" : "Animals", "capitals" : "Capitals",
           "countries" : "Countries", "hardw" : "Hard Words", "normal" : "Normal",
-          "easy" : "Easy", "hard" : "Hard", "<" : "<", ">" : ">"}
+          "easy" : "Easy", "hard" : "Hard", "<" : "<", ">" : ">", "music" : "Music",
+          "sfx" : "SFX"}
 
 PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
           "settings" : "Definicoes", "language" : "Idioma", "lost" : "Perdeste!",
@@ -39,4 +40,5 @@ PT_DIC = {" <" : " <", "EN" : "EN", "PT" : "PT", "R" : "R", "play" : "Jogar",
           "theme" : "Tema", "difficulty" : "Dificuldade", "start" : "Iniciar",
           "all" : "Tudo", "animals" : "Animais", "capitals" : "Capitais",
           "countries" : "Países", "hardw" : "Palavras difícies", "normal" : "Normal",
-          "easy" : "Fácil", "hard" : "Difícil", "<" : "<", ">" : ">"}
+          "easy" : "Fácil", "hard" : "Difícil", "<" : "<", ">" : ">", "music" : "Música",
+          "sfx" : "SFX"}

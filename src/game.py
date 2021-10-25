@@ -3,6 +3,7 @@ from word import Word
 from hangman import Hangman
 from config import *
 from button import Button
+from bar import Bar
 
 
 class Game:
@@ -24,6 +25,8 @@ class Game:
         self.themes = ["all", "animals", "capitals", "countries", "hardw"]
         self.difficulty = "normal"
         self.difficulties = ["easy", "normal", "hard"]
+        self.volume_sfx = 1.0
+        self.volume_music = 1.0
 
         self.images = {}
 
@@ -40,6 +43,8 @@ class Game:
         self.right_button2 = Button(">", [0, 0], LETTER_SIZE)
         self.left_button1 = Button("<", [0, 0], LETTER_SIZE)
         self.left_button2 = Button("<", [0, 0], LETTER_SIZE)
+
+        self.sfx_bar = Bar((400, 500), 150, 1.0)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, 
@@ -172,6 +177,15 @@ class Game:
         win.blit(text, (50, 300))
         self.theme_button.allign_right(50, self.width)
         self.theme_button.render(win)
+
+        if self.dark_theme: text = font2.render(self.key_words["music"], True, WHITE)
+        else: text = font2.render(self.key_words["music"], True, BLACK)
+        win.blit(text, (50, 400))
+
+        if self.dark_theme: text = font2.render(self.key_words["sfx"], True, WHITE)
+        else: text = font2.render(self.key_words["sfx"], True, BLACK)
+        win.blit(text, (50, 500))
+        self.sfx_bar.render(win, self.dark_theme)
 
     def render_playing(self, win):
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)

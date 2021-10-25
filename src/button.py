@@ -82,14 +82,22 @@ class Button:
          @pos - Mouse's Coordinates.
          @mouse_down - True if the mouse if being pressed.
       '''
+      pygame.mixer.init()
+      button_point = pygame.mixer.Sound("../assets/sounds/button_point.mp3")
+      button_point.set_volume(0.2)
+      button_click = pygame.mixer.Sound("../assets/sounds/button_click.mp3")
+
       if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1]: #clicked in the button
          if pos[1] > self.hitbox[2] and pos[1] < self.hitbox[3]:
+            if not self.pointing: pygame.mixer.Sound.play(button_point)
             self.pointing = True
          else: self.pointing = False
       else: self.pointing = False
 
       if self.pointing:
-         if self.held and not mouse_down: self.clicked = True
+         if self.held and not mouse_down:
+            self.clicked = True
+            pygame.mixer.Sound.play(button_click)
          self.held = mouse_down
 
       #if self.text == 'play': print(self.held)
