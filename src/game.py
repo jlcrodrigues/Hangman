@@ -27,6 +27,7 @@ class Game:
         self.difficulties = ["easy", "normal", "hard"]
         self.volume_sfx = 0.5
         self.volume_music = 0.5
+        self.streak = 0
 
         self.images = {}
 
@@ -78,6 +79,7 @@ class Game:
                 self.word.solve_letter()
 
         print(self.word.letters) #print the solution
+        print(self.streak)
 
     def update_buttons(self):
         '''Changes all the buttons display to the current language (if needed).'''
@@ -241,8 +243,14 @@ class Game:
             else: text = font.render(self.key_words["won"], 1, BLACK)
             win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 60))
 
-        #####Render buttons####
+        #####Render buttons#####
         self.restart_button.render(win)
+
+        #####Render the streak#####
+        if self.streak > 0:
+            if self.dark_theme: text = font.render(str(self.streak), True, WHITE)
+            else: text = font.render(str(self.streak), True, BLACK)
+            win.blit(text, (20, self.height / 2 - 160))
 
     def render_pre_play(self, win):
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
@@ -366,7 +374,9 @@ class Game:
                         if self.player_text not in ALPHABET:
                             self.player_text = ""
 
-                    if event.key == pygame.K_RETURN: self.start()
+                    if event.key == pygame.K_RETURN:
+                        if not self.over: self.streak = 0
+                        self.start()
 
         return True
 
@@ -429,6 +439,7 @@ class Game:
             if self.playing:
                 # restart button
                 if self.restart_button.check():
+                    self.streak = 0
                     self.start()
 
                 # handling the guessing
@@ -440,9 +451,14 @@ class Game:
                             if self.difficulty == "hard": self.hangman.state += 1
                 self.player_text = ""
 
-                if self.hangman.state == 8 or not '_' in self.word.filled_letters:
+                if self.hangman.state == 8 :
                     self.over = True
+                    self.streak = 0
                     self.word.solve()
+
+                if not '_' in self.word.filled_letters:
+                    self.over = True
+                    if not self.game_over_played: self.streak += 1
 
             if self.pre_play:
                 if self.start_button.check():
