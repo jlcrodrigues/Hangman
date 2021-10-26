@@ -25,8 +25,8 @@ class Game:
         self.themes = ["all", "animals", "capitals", "countries", "hardw"]
         self.difficulty = "normal"
         self.difficulties = ["easy", "normal", "hard"]
-        self.volume_sfx = 1.0
-        self.volume_music = 1.0
+        self.volume_sfx = 0.5
+        self.volume_music = 0.5
 
         self.images = {}
 
@@ -45,6 +45,7 @@ class Game:
         self.left_button2 = Button("<", [0, 0], LETTER_SIZE)
 
         self.sfx_bar = Bar([400, 500], 150, 0.5)
+        self.music_bar = Bar([400, 400], 150, 0.5)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, 
@@ -53,6 +54,16 @@ class Game:
 
         self.en_button.press()
 
+        pygame.mixer.init()
+        self.music_playing = False
+        self.winning_sound = pygame.mixer.Sound("../assets/sounds/win.mp3")
+        self.lose_sound = pygame.mixer.Sound("../assets/sounds/lose.mp3")
+        #self.play_music = pygame.mixer.Sound("../assets/sounds/play.mp3")
+        #self.menu_music = pygame.mixer.Sound("../assets/sounds/menu.mp3")
+        pygame.mixer.music.load("../assets/sounds/menu.mp3")
+        self.game_over_played = False
+        
+
     def start(self):
         '''Starts the game.'''
         self.word = Word(self.theme, self.language, self.themes)
@@ -60,6 +71,7 @@ class Game:
         self.playing = True
         self.hangman = Hangman()
         self.over = False
+        self.game_over_played = False
 
         if self.difficulty == "easy":
             for _ in range(int(self.word.length / 5)):
@@ -182,6 +194,8 @@ class Game:
         if self.dark_theme: text = font2.render(self.key_words["music"], True, WHITE)
         else: text = font2.render(self.key_words["music"], True, BLACK)
         win.blit(text, (50, 400))
+        self.music_bar.allign_right(50, self.width)
+        self.music_bar.render(win, self.dark_theme)
 
         if self.dark_theme: text = font2.render(self.key_words["sfx"], True, WHITE)
         else: text = font2.render(self.key_words["sfx"], True, BLACK)
@@ -335,6 +349,7 @@ class Game:
                     self.en_button.click(mouse, click[0])
                     self.theme_button.click(mouse, click[0])
                     self.sfx_bar.drag(mouse, click[0])
+                    self.music_bar.drag(mouse, click[0])
                 if self.playing:
                     self.restart_button.click(mouse, click[0])
                 if self.pre_play:
@@ -378,6 +393,7 @@ class Game:
         else:
             # return to menu button
             if self.return_button.clicked:
+                if self.playing: pygame.mixer.music.stop()
                 self.return_button.clicked = False
                 self.menu = True
                 self.playing = False
@@ -408,6 +424,7 @@ class Game:
 
                 self.volume_sfx = self.sfx_bar.pos
                 self.sfx_bar.set_volume(self.sfx_bar.pos)
+                self.volume_music = self.music_bar.pos
 
             if self.playing:
                 # restart button
@@ -430,6 +447,7 @@ class Game:
             if self.pre_play:
                 if self.start_button.check():
                     self.pre_play = False
+                    pygame.mixer.music.stop()
                     self.start()
 
                 if self.right_button1.check():
@@ -440,3 +458,24 @@ class Game:
                     self.difficulty = self.difficulties[min(len(self.difficulties) - 1, self.difficulties.index(self.difficulty) + 1)]
                 if self.left_button2.check():
                     self.difficulty = self.difficulties[max(0, self.difficulties.index(self.difficulty) - 1)]
+
+    def play_sounds(self):
+        pygame.mixer.music.set_volume(self.volume_music)
+        if self.playing:
+            if not pygame.mixer.music.get_busy():
+                pygame.mixer.music.load("../assets/sounds/play.mp3")
+                pygame.mixer.music.play(-1)
+
+            if not self.game_over_played:
+                if self.hangman.state == 8:
+                    self.winning_sound.set_volume(self.volume_sfx)
+                    pygame.mixer.Sound.play(self.winning_sound)
+                    self.game_over_played = True
+                elif not '_' in self.word.filled_letters:
+                    self.lose_sound.set_volume(self.volume_sfx)
+                    pygame.mixer.Sound.play(self.lose_sound)
+                    self.game_over_played = True
+        else:
+            if not pygame.mixer.music.get_busy():
+                pygame.mixer.music.load("../assets/sounds/menu.mp3")
+                pygame.mixer.music.play(-1)

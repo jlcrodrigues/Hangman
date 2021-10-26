@@ -16,6 +16,10 @@ class Bar():
          bar = pygame.image.load("../assets/images/bar.png")
          if not self.pointing: bar_button = pygame.image.load("../assets/images/bar_button.png")
          else: bar_button = pygame.image.load("../assets/images/bar_button_point.png")
+      else: 
+         bar = pygame.image.load("../assets/images/bar_light.png")
+         if not self.pointing: bar_button = pygame.image.load("../assets/images/bar_button_light.png")
+         else: bar_button = pygame.image.load("../assets/images/bar_button_point.png")
 
       win.blit(bar, self.coords)
       win.blit(bar_button, (self.coords[0] + int(self.pos * self.length), self.coords[1]))

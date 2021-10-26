@@ -31,6 +31,9 @@ def main():
         # Execute all the game logic
         game.run_logic()
 
+        #Play the sounds
+        game.play_sounds()
+
     pygame.quit()
 
 
