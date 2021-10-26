@@ -13,6 +13,7 @@ class Button:
       self.held = False #True if the mouse is clicking the button
       self.clicked = False #True if the mouse has been clicked
       self.width = self.display.get_width()
+      self.volume = 1.0
       self.hitbox = [coords[0], coords[0] + self.display.get_width(), coords[1], coords[1] + self.display.get_height()]
 
    def render(self, win):
@@ -75,6 +76,9 @@ class Button:
          return True
       return False
 
+   def set_volume(self, volume):
+      self.volume = volume
+
    def click(self, pos, mouse_down):
       '''Holds the logic for when the button is clicked.
       
@@ -84,8 +88,9 @@ class Button:
       '''
       pygame.mixer.init()
       button_point = pygame.mixer.Sound("../assets/sounds/button_point.mp3")
-      button_point.set_volume(0.2)
+      button_point.set_volume(self.volume)
       button_click = pygame.mixer.Sound("../assets/sounds/button_click.mp3")
+      button_click.set_volume(self.volume)
 
       if pos[0] > self.hitbox[0] and pos[0] < self.hitbox[1]: #clicked in the button
          if pos[1] > self.hitbox[2] and pos[1] < self.hitbox[3]:

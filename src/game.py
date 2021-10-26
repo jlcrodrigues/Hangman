@@ -44,7 +44,7 @@ class Game:
         self.left_button1 = Button("<", [0, 0], LETTER_SIZE)
         self.left_button2 = Button("<", [0, 0], LETTER_SIZE)
 
-        self.sfx_bar = Bar((400, 500), 150, 1.0)
+        self.sfx_bar = Bar([400, 500], 150, 0.5)
 
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, 
@@ -75,6 +75,7 @@ class Game:
                         self.right_button2, self.left_button1, self.left_button2]
         for i in self.buttons:
             i.set_text(self.key_words[i.text], self.dark_theme)
+            i.set_volume(self.volume_sfx)
 
     def get_images(self):
         if self.dark_theme:
@@ -185,6 +186,7 @@ class Game:
         if self.dark_theme: text = font2.render(self.key_words["sfx"], True, WHITE)
         else: text = font2.render(self.key_words["sfx"], True, BLACK)
         win.blit(text, (50, 500))
+        self.sfx_bar.allign_right(50, self.width)
         self.sfx_bar.render(win, self.dark_theme)
 
     def render_playing(self, win):
@@ -198,11 +200,9 @@ class Game:
         for i in ALPHABET:
             if self.dark_theme: text = font.render(i, 1, WHITE)
             else: text = font.render(i, 1, BLACK)
-            if i in self.word.used_letters:
+            if i in self.word.used_letters or i in self.word.filled_letters:
                 if self.dark_theme: text = font.render(i, 1, BLACK)
                 else: text = font.render(i, 1, WHITE)
-            elif i in self.word.filled_letters:
-                if self.dark_theme: text = font.render(i, 1, WHITE)
 
             win.blit(text, (pos_x - (text.get_width() / 2), pos_y))
             pos_x += LETTER_SIZE
@@ -221,11 +221,11 @@ class Game:
         if self.hangman.state == 8:
             if self.dark_theme: text = font.render(self.key_words["lost"], True, WHITE)
             else: text = font.render(self.key_words["lost"], True, BLACK)
-            win.blit(text, (self.width / 2 - text.get_width() / 2, 360))
+            win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 60))
         elif not '_' in self.word.filled_letters:
             if self.dark_theme: text = font.render(self.key_words["won"], 1, WHITE)
             else: text = font.render(self.key_words["won"], 1, BLACK)
-            win.blit(text, (self.width / 2 - text.get_width() / 2, 360))
+            win.blit(text, (self.width / 2 - text.get_width() / 2, self.height / 2 + 60))
 
         #####Render buttons####
         self.restart_button.render(win)
@@ -334,6 +334,7 @@ class Game:
                     self.pt_button.click(mouse, click[0])
                     self.en_button.click(mouse, click[0])
                     self.theme_button.click(mouse, click[0])
+                    self.sfx_bar.drag(mouse, click[0])
                 if self.playing:
                     self.restart_button.click(mouse, click[0])
                 if self.pre_play:
@@ -404,6 +405,9 @@ class Game:
                     else:
                         self.theme_button.set_text("ON", self.dark_theme)
                         self.dark_theme = True
+
+                self.volume_sfx = self.sfx_bar.pos
+                self.sfx_bar.set_volume(self.sfx_bar.pos)
 
             if self.playing:
                 # restart button
