@@ -26,7 +26,8 @@ class Word:
 
     def solve_letter(self):
         '''Fills a random letter.'''
-        self.fill(random.choice(list(set(self.letters) - set(self.filled_letters))))
+        if '_' in self.filled_letters:
+            self.fill(random.choice(list(set(self.letters) - set(self.filled_letters))))
 
     def fill(self, letter):
         '''Replaces a letter in the word being guessed if it belongs.

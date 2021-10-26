@@ -44,6 +44,7 @@ class Game:
         self.right_button2 = Button(">", [0, 0], LETTER_SIZE)
         self.left_button1 = Button("<", [0, 0], LETTER_SIZE)
         self.left_button2 = Button("<", [0, 0], LETTER_SIZE)
+        self.aid_button = Button("?", [0, 0], LETTER_SIZE)
 
         self.sfx_bar = Bar([400, 500], 150, 0.5)
         self.music_bar = Bar([400, 400], 150, 0.5)
@@ -51,7 +52,8 @@ class Game:
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button, 
                         self.en_button, self.start_button, self.right_button1,
-                        self.right_button2, self.left_button1, self.left_button2]
+                        self.right_button2, self.left_button1, self.left_button2,
+                        self.aid_button]
 
         self.en_button.press()
 
@@ -86,7 +88,8 @@ class Game:
         self.buttons = [self.play_button, self.return_button, self.restart_button,
                         self.settings_button, self.help_button, self.pt_button,
                         self.en_button, self.start_button, self.right_button1,
-                        self.right_button2, self.left_button1, self.left_button2]
+                        self.right_button2, self.left_button1, self.left_button2,
+                        self.aid_button]
         for i in self.buttons:
             i.set_text(self.key_words[i.text], self.dark_theme)
             i.set_volume(self.volume_sfx)
@@ -245,6 +248,9 @@ class Game:
 
         #####Render buttons#####
         self.restart_button.render(win)
+        self.aid_button.allign_right(20, self.width)
+        self.aid_button.set_y(self.height / 2 - 160)
+        self.aid_button.render(win)
 
         #####Render the streak#####
         if self.streak > 0:
@@ -360,6 +366,7 @@ class Game:
                     self.music_bar.drag(mouse, click[0])
                 if self.playing:
                     self.restart_button.click(mouse, click[0])
+                    self.aid_button.click(mouse, click[0])
                 if self.pre_play:
                     self.start_button.click(mouse, click[0])
                     self.right_button1.click(mouse, click[0])
@@ -439,8 +446,11 @@ class Game:
             if self.playing:
                 # restart button
                 if self.restart_button.check():
-                    self.streak = 0
+                    if not self.over: self.streak = 0
                     self.start()
+
+                if self.aid_button.check():
+                    self.word.solve_letter()
 
                 # handling the guessing
                 if len(self.player_text) == 1 and not self.over:
