@@ -28,6 +28,8 @@ class Game:
         self.volume_sfx = 0.5
         self.volume_music = 0.5
         self.streak = 0
+        with open("../assets/stats/balance.txt", "r") as input_file:
+                self.balance = int(input_file.readlines()[0])
 
         self.images = {}
 
@@ -81,7 +83,6 @@ class Game:
                 self.word.solve_letter()
 
         print(self.word.letters) #print the solution
-        print(self.streak)
 
     def update_buttons(self):
         '''Changes all the buttons display to the current language (if needed).'''
@@ -93,6 +94,10 @@ class Game:
         for i in self.buttons:
             i.set_text(self.key_words[i.text], self.dark_theme)
             i.set_volume(self.volume_sfx)
+
+    def write_stats(self):
+        with open("../assets/stats/balance.txt", "w") as input_file:
+                input_file.write(str(self.balance))
 
     def get_images(self):
         if self.dark_theme:
@@ -258,6 +263,11 @@ class Game:
             else: text = font.render(str(self.streak), True, BLACK)
             win.blit(text, (20, self.height / 2 - 160))
 
+        #####Render the balance#####
+        if self.dark_theme: text = font.render(str(self.balance), True, WHITE)
+        else: text = font.render(str(self.balance), True, BLACK)
+        win.blit(text, (self.width - len(str(self.balance)) * 20 - 20, 0))
+
     def render_pre_play(self, win):
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)
@@ -340,6 +350,7 @@ class Game:
         # print(mouse)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.write_stats()
                 return False
 
             elif event.type == pygame.VIDEORESIZE:
@@ -450,7 +461,9 @@ class Game:
                     self.start()
 
                 if self.aid_button.check():
-                    self.word.solve_letter()
+                    if self.balance >= 5:
+                        self.balance -= 5
+                        self.word.solve_letter()
 
                 # handling the guessing
                 if len(self.player_text) == 1 and not self.over:
@@ -468,7 +481,9 @@ class Game:
 
                 if not '_' in self.word.filled_letters:
                     self.over = True
-                    if not self.game_over_played: self.streak += 1
+                    if not self.game_over_played: 
+                        self.streak += 1
+                        self.balance += int(self.streak * 0.5)
 
             if self.pre_play:
                 if self.start_button.check():
