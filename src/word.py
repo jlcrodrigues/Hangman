@@ -4,6 +4,11 @@ from config import *
 
 class Word:
     def __init__(self, theme, language, themes):
+        '''
+            @theme - The game's word theme.
+            @languange - The current game's language.
+            @themes - All available themes.
+        '''
         if theme != "all":
             with open("../assets/words/" + language + "/" + theme + ".txt", "r") as input_file:
                 list_words = [x[:-1] for x in input_file.readlines()] #ignore the \n
@@ -32,7 +37,6 @@ class Word:
     def fill(self, letter):
         '''Replaces a letter in the word being guessed if it belongs.
         
-        Parameters:
         @letter - The letter the user wants to try to fill.
 
         @return - True if the letter belongs in the solution.
@@ -48,7 +52,13 @@ class Word:
         return False
 
     def draw(self, win, dark_theme, width, height):
-        '''Renders each letter from filled_letters.'''
+        '''Renders each letter from filled_letters.
+        
+            @win - The game window.
+            @dark_theme - True if dark theme is on.
+            @width - The window's width.
+            @height - The window's height.
+        '''
         pos_x = width / 2 - LETTER_SIZE * (self.length / 2) + 20
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         for i in self.filled_letters:

@@ -1,7 +1,4 @@
 from game import Game
-from hangman import Hangman
-from player import Player
-from word import Word
 from config import *
 import pygame
 

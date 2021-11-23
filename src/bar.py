@@ -3,6 +3,12 @@ from config import *
 
 class Bar():
    def __init__(self, coords, length, pos):
+      '''
+         @text - What's displayed by the button.
+         @coords - Button's position. [x,y]
+         @length - Bar's length.
+         @pos - The relative position of the button to the bar.
+      '''
       self.length = length
       self.pos = pos
       self.coords = coords
@@ -12,6 +18,10 @@ class Bar():
       self.volume = pos
 
    def render(self, win, dark_theme):
+      '''Renders the button on the screen.
+
+         @win - The game window.
+         @dark_theme - True if datk theme is on.'''
       if dark_theme: 
          bar = pygame.image.load("../assets/images/bar.png")
          if not self.pointing: bar_button = pygame.image.load("../assets/images/bar_button.png")
@@ -25,17 +35,24 @@ class Bar():
       win.blit(bar_button, (self.coords[0] + int(self.pos * self.length), self.coords[1]))
 
    def allign_right(self, distance, width):
+      '''Alligns the button to the right.
+
+         @distance - Distance to the right border.
+         @width - The window's width.'''
       self.coords[0] = width - distance - self.length
       self.hitbox[0] = self.coords[0]
       self.hitbox[1] = self.hitbox[0] + self.length
 
    def set_volume(self, volume):
+      '''Sets the button's volume.
+      
+         @volume - The new volume.
+      '''
       self.volume = volume
 
    def drag(self, mouse_pos, mouse_down):
       '''Holds the logic for when the button is dragged.
       
-         Parameters:
          @pos - Mouse's Coordinates.
          @mouse_down - True if the mouse if being pressed.
       '''

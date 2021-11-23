@@ -8,31 +8,36 @@ from bar import Bar
 
 class Game:
     def __init__(self):
+        #Current displaying window booleans
         self.menu = True
         self.settings = False
         self.playing = False
         self.help = False
         self.pre_play = False
+
+        #Game logic
         self.player_text = ""  # current input from player
         self.used_letters = []
         self.over = False
-        self.dark_theme = True
-        self.language = "english"
-        self.key_words = EN_DIC  # holds all key words depending on the active language
-        self.width = SCREEN_WIDTH
-        self.height = SCREEN_HEIGHT
-        self.theme = "all"
-        self.themes = ["all", "animals", "capitals", "countries", "hardw"]
-        self.difficulty = "normal"
-        self.difficulties = ["easy", "normal", "hard"]
-        self.volume_sfx = 0.5
-        self.volume_music = 0.5
         self.streak = 0
         with open("../assets/stats/balance.txt", "r") as input_file:
                 self.balance = int(input_file.readlines()[0])
 
+        #Window and display
+        self.width = SCREEN_WIDTH
+        self.height = SCREEN_HEIGHT
+        self.volume_sfx = 0.5
+        self.volume_music = 0.5
+        self.dark_theme = True
+        self.language = "english"
+        self.key_words = EN_DIC  # holds all key words depending on the active language
+        self.theme = "all"
+        self.themes = ["all", "animals", "capitals", "countries", "hardw"]
+        self.difficulty = "normal"
+        self.difficulties = ["easy", "normal", "hard"]
         self.images = {}
 
+        #Buttons and bars
         self.play_button = Button("play", [200, 400], LETTER_SIZE)
         self.start_button = Button("start", [200, 500], LETTER_SIZE)
         self.return_button = Button(" <", [0, 0], LETTER_SIZE)
@@ -59,12 +64,11 @@ class Game:
 
         self.en_button.press()
 
+        #Sounds
         pygame.mixer.init()
         self.music_playing = False
         self.winning_sound = pygame.mixer.Sound("../assets/sounds/win.mp3")
         self.lose_sound = pygame.mixer.Sound("../assets/sounds/lose.mp3")
-        #self.play_music = pygame.mixer.Sound("../assets/sounds/play.mp3")
-        #self.menu_music = pygame.mixer.Sound("../assets/sounds/menu.mp3")
         pygame.mixer.music.load("../assets/sounds/menu.mp3")
         self.game_over_played = False
         
@@ -82,7 +86,7 @@ class Game:
             for _ in range(int(self.word.length / 5)):
                 self.word.solve_letter()
 
-        print(self.word.letters) #print the solution
+        #print(self.word.letters) #print the solution
 
     def update_buttons(self):
         '''Changes all the buttons display to the current language (if needed).'''
@@ -96,10 +100,12 @@ class Game:
             i.set_volume(self.volume_sfx)
 
     def write_stats(self):
+        '''Updates the current balance to memory.'''
         with open("../assets/stats/balance.txt", "w") as input_file:
                 input_file.write(str(self.balance))
 
     def get_images(self):
+        '''Updates the images according to the selected theme.'''
         if self.dark_theme:
             self.images["menu"] = pygame.image.load(
                 "../assets/images/menu.png")
@@ -148,6 +154,10 @@ class Game:
                 "../assets/images/help_portuguese_light.png")
 
     def render_menu(self, win):
+        '''Renders the menu tab.
+        
+            @win - The game window.
+        '''
         menu_img = self.images["menu"]
         win.blit(menu_img, (self.width / 2 - 300, self.height / 2 - 300))
 
@@ -167,6 +177,10 @@ class Game:
         self.help_button.render(win)
 
     def render_help(self, win):
+        '''Renders the help tab.
+        
+            @win - The game window.
+        '''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         image = self.images["help_%s" % (str(self.language))]
         win.blit(image, (self.width / 2 - 300, self.height / 2 - 400))
@@ -178,6 +192,10 @@ class Game:
         win.blit(text, (self.width / 2 - text.get_width() / 2, 0))
 
     def render_settings(self, win):
+        '''Renders the settings tab.
+        
+            @win - The game window.
+        '''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)
         
@@ -214,6 +232,10 @@ class Game:
         self.sfx_bar.render(win, self.dark_theme)
 
     def render_playing(self, win):
+        '''Renders the playing tab.
+        
+            @win - The game window.
+        '''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
 
         #####Render the alphabet in the bottom#####
@@ -269,6 +291,10 @@ class Game:
         win.blit(text, (self.width - len(str(self.balance)) * 20 - 20, 0))
 
     def render_pre_play(self, win):
+        '''Renders the pre_play tab.
+        
+            @win - The game window.
+        '''
         font = pygame.font.Font(FONT_NAME, LETTER_SIZE)
         font2 = pygame.font.Font(FONT_NAME, LETTER_SIZE2)
         
@@ -309,7 +335,10 @@ class Game:
         self.start_button.render(win)
     
     def render(self, win):
-        '''Renders everything to the screen.'''
+        '''Renders the current tab.
+        
+            @win - The game window.
+        '''
         self.width = pygame.display.get_surface().get_width()
         self.height = pygame.display.get_surface().get_height()
 
@@ -501,6 +530,7 @@ class Game:
                     self.difficulty = self.difficulties[max(0, self.difficulties.index(self.difficulty) - 1)]
 
     def play_sounds(self):
+        '''Plays the game's sounds.'''
         pygame.mixer.music.set_volume(self.volume_music)
         if self.playing:
             if not pygame.mixer.music.get_busy():
